@@ -1,5 +1,7 @@
 #!/usr/bin/perl 
 # Find all test files
-chdir ('..');
 $raw_files = `find . -name "*.sh"`;
-print $raw_files;
+@tests = split (/\s/, $raw_files);
+for $test (@tests) {
+    print $test."\n";
+}
