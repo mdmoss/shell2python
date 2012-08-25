@@ -1,17 +1,46 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
-# written by andrewt@cse.unsw.edu.au March 2011
-# as a starting point for COMP2041/9041 assignment 
-# http://cgi.cse.unsw.edu.au/~cs2041/12s2/assignment/shell2python
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s1
 
-while ($line = <>) {
+# Based on code by Andrew Taylor
+# See original header below
+
+# # written by andrewt@cse.unsw.edu.au March 2011
+# # as a starting point for COMP2041/9041 assignment 
+# # http://cgi.cse.unsw.edu.au/~cs2041/12s2/assignment/shell2python
+
+use strict;
+
+my %imports;
+my @python_lines;
+
+while (my $line = <>) {
     chomp $line;
     if ($line =~ /^#!/ && $. == 1) {
-        print "#!/usr/bin/python2.7\n";
-    } elsif ($line =~ /echo/) {
-        print "print 'hello world'\n";
+        # This is the shebang. It can be ignored
+    } elsif ($line =~ /echo ["'](.*)["']/) {
+        push (@python_lines, "print '$1'\n");
+    } elsif ($line =~ /(\w+)\s(.+)/) {
+        # We'll assume these lines are executions
+        $imports{"subprocess"} = 1;
+        push (@python_lines, "subprocess.call([\"$1\", \"$2\"])\n");
+
     } else {
-        # Lines we can't translate are turned into comments
-        print "#$line\n";
+        push (@python_lines, "#".$line);
     }
+}
+
+# Begin outputting the final result
+
+# We're targeting python 2.7, so it makes sense to always use it
+print "#!/usr/bin/python2.7\n";
+
+foreach my $import (keys %imports) {
+    print "import $import\n";
+}
+
+foreach my $line (@python_lines) {
+    print $line;
 }
