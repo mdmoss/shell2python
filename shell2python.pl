@@ -14,21 +14,21 @@
 use strict;
 
 my %imports;
-my @python_lines;
+my @python_chunks;
 
 while (my $line = <>) {
     chomp $line;
     if ($line =~ /^#!/ && $. == 1) {
         # This is the shebang. It can be ignored
     } elsif ($line =~ /echo ["'](.*)["']/) {
-        push (@python_lines, "print '$1'\n");
+        push (@python_chunks, "print '$1'\n");
     } elsif ($line =~ /(\w+)\s(.+)/) {
         # We'll assume these lines are executions
         $imports{"subprocess"} = 1;
-        push (@python_lines, "subprocess.call([\"$1\", \"$2\"])\n");
+        push (@python_chunks, "subprocess.call([\"$1\", \"$2\"])\n");
 
     } else {
-        push (@python_lines, "#".$line);
+        push (@python_chunks, "#".$line);
     }
 }
 
@@ -41,6 +41,6 @@ foreach my $import (keys %imports) {
     print "import $import\n";
 }
 
-foreach my $line (@python_lines) {
+foreach my $line (@python_chunks) {
     print $line;
 }
