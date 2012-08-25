@@ -6,7 +6,9 @@ use File::Copy;
 my $temp_location = "/tmp/shell2python/";
 
 # Change to the directory where the script should be
-chdir ("..");
+unless (-e "shell2python.pl") {
+    die "Script not found";
+}
 
 # Find all test files
 my $raw_files = `find . -name "*.sh"`;
@@ -28,7 +30,8 @@ for my $test (@tests) {
     my $python_test = $temp_location.$test_path[-1];
     $python_test =~ s/\.sh$/\.py/;
     `perl ./shell2python.pl $test > $python_test`;
-    my $python_output = `echo "123" | python $python_test`;
+    `chmod 755 $python_test`;
+    my $python_output = `echo "123" | $python_test`;
     $tests_run++;
     if ($python_output eq $expected_output) {
         print "Test passed. $python_test performed correctly\n";
