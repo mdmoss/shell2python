@@ -22,15 +22,4 @@ sub to_py_list {
     return $shell_line;
 }
 
-sub to_py_list_test {
-    print to_py_list ("ls");
-    print "\n['ls']\n";
-
-    print to_py_list ("ls -l");
-    print "\n['ls', '-l']\n";
-
-    print to_py_list ("ls -l /tmp/");
-    print "\n['ls', '-l', '/tmp/']\n";
-}
-
 1;
