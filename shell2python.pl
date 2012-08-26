@@ -13,6 +13,8 @@
 
 use strict;
 
+require CommandSplit;
+
 my %imports;
 my @python_chunks;
 
@@ -22,10 +24,10 @@ while (my $line = <>) {
         # This is the shebang. It can be ignored
     } elsif ($line =~ /echo ["'](.*)["']/) {
         push (@python_chunks, "print '$1'\n");
-    } elsif ($line =~ /(\w+)\s(.+)/) {
+    } elsif ($line =~ /\w+/) {
         # We'll assume these lines are executions
         $imports{"subprocess"} = 1;
-        push (@python_chunks, "subprocess.call([\"$1\", \"$2\"])\n");
+        push (@python_chunks, "subprocess.call(".CommandSplit::to_py_list ($line).")\n");
 
     } else {
         push (@python_chunks, "#".$line);
