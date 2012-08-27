@@ -13,6 +13,7 @@
 
 use strict;
 
+require Builtins;
 require CommandSplit;
 require Assignment;
 
@@ -23,8 +24,8 @@ while (my $line = <>) {
     chomp $line;
     if ($line =~ /^#!/ && $. == 1) {
         # This is the shebang. It can be ignored
-    } elsif ($line =~ /echo ["'](.*)["']/) {
-        push (@python_chunks, "print '$1'\n");
+    } elsif ($line =~ /echo .*/) {
+        push (@python_chunks, Builtins::echo_to_print ($line)."\n");
     } elsif ($line =~ /\w+=\w+$/) {
         push (@python_chunks, Assignment::translate ($line)."\n");
     } elsif ($line =~ /\w+/) {
