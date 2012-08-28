@@ -24,6 +24,9 @@ while (my $line = <>) {
     chomp $line;
     if ($line =~ /^#!/ && $. == 1) {
         # This is the shebang. It can be ignored
+    } elsif ($line =~ /^\s*#(.*)/) {
+        # This is a comment. We'll replicate it exactly
+        push (@python_chunks, "#".$1); 
     } elsif ($line =~ /echo .*/) {
         push (@python_chunks, Builtins::echo_to_print ($line)."\n");
     } elsif ($line =~ /\w+=\w+$/) {
