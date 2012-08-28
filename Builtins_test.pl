@@ -2,7 +2,7 @@
 use strict;
 
 use Builtins;
-use Test::More tests => 17;
+use Test::More 'no_plan';
 
 is (Builtins::escape_echo_arg ('$var'), "var");
 is (Builtins::escape_echo_arg ("confusing"), '"confusing"');
@@ -20,6 +20,7 @@ is (Builtins::get_comment ("no comment #comment"), "#comment");
 is (Builtins::get_comment ("no comment#comment"), "#comment");
 is (Builtins::get_comment ("'no # comment'"), "");
 is (Builtins::get_comment ('"#no comment"'), "");
-is (Builtins::get_comment ("no /# comment"), "");
+is (Builtins::get_comment ("no \\# comment"), "");
 is (Builtins::get_comment ("'#comment"), "#comment");
 is (Builtins::get_comment ("#comment''"), "#comment''");
+

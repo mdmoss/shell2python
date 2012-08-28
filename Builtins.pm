@@ -39,11 +39,19 @@ sub escape_echo_arg {
 sub get_comment {
     # Returns any comments present in a string
     my $input = $_[0];
-    if ($input =~ /[^\'\"\\]*(#.*)/) {
+    if ($input =~ /^[^'"\\]*?(#.*)$/) {
         # It's a simple comment. Return it
-        return $1;
+         return $1;
     }
-    
+    $input =~ s/\\#//g; 
+    # Strip all matched quotes and strings from start string
+    while ($input =~ /([^#]|\\#)*(['"]).*?\2/) {
+        $input =~ s/(['"])[^\1]*\1//;
+    }
+    $input =~ s/(['"]).*?\1//g;
+    $input =~ s/^[^#]*//;
+
+    return $input;
 }
 
 1;
