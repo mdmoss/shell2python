@@ -36,5 +36,14 @@ sub escape_echo_arg {
     return $input;    
 }
 
+sub get_comment {
+    # Returns any comments present in a string
+    my $input = $_[0];
+    if ($input =~ /[^\'\"\\]*(#.*)/) {
+        # It's a simple comment. Return it
+        return $1;
+    }
+    
+}
 
 1;
