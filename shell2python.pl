@@ -27,7 +27,7 @@ while (my $line = <>) {
     } elsif ($line =~ /^\s*#(.*)/) {
         # This is a comment. We'll replicate it exactly
         push (@python_chunks, "#".$1); 
-    } elsif ($line =~ /echo .*/) {
+    } elsif ($line =~ /echo.*/) {
         push (@python_chunks, Builtins::echo_to_print ($line)."\n");
     } elsif ($line =~ /\w+=\w+$/) {
         push (@python_chunks, Assignment::translate ($line)."\n");

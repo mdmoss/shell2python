@@ -12,11 +12,11 @@ sub echo_to_print {
 
     my @arguments = split (/\s/, $input);
     # We assume the first argument is the echo command
-    for my $i (1..($#arguments -1)) {
+    for my $i (1..($#arguments)) {
         $result = $result.escape_echo_arg($arguments[$i]).", "; 
-    }   
-    $result = $result.escape_echo_arg($arguments[$#arguments]);
-    
+    }
+    # Remove trailing whitespace, and possible comma whitespace
+    $result =~ s/\s*(,\s*)?$//;
     return $result;
 }
 
