@@ -7,7 +7,7 @@ my %builtins;
 $builtins{'echo'} = \&echo_to_print;
 #$builtins{'exit'} = 1;
 #$builtins{'read'} = 1;
-#$builtins{'cd'} = 1;
+$builtins{cd} = \&cd_to_chdir;
 #$builtins{'test'} = 1;
 #$builtins{'expr'} = 1;
 
@@ -39,6 +39,14 @@ sub echo_to_print {
     return $result;
 }
 
+sub cd_to_chdir {
+    my $input = $_[0];
+    chomp $input;
+    $input =~ s/cd//;
+    my $result = "os.chdir(".translate_args($input).")";
+    return $result;
+}
+
 sub translate_args {
     my $result = "";
     my @arguments = split (/\s+/, $_[0]);
@@ -60,9 +68,9 @@ sub escape_arg {
         $input = $input; # No change at this point
     } elsif ($input =~ /['"]/) {
         $input =~ s/['"]//g;
-        $input = '"'.$input.'"';
+        $input = "'".$input."'";
     } else {
-        $input = '"'.$input.'"';
+        $input = "'".$input."'";
     }   
     return $input;    
 }
