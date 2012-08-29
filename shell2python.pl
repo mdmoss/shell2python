@@ -24,20 +24,29 @@ while (my $line = <>) {
     chomp $line;
     if ($line =~ /^#!/ && $. == 1) {
         # This is the shebang. It can be ignored
-    } elsif ($line =~ /^\s*#(.*)/) {
-        # This is a comment. We'll replicate it exactly
-        push (@python_chunks, "#".$1); 
-    } elsif ($line =~ /echo.*/) {
-        push (@python_chunks, Builtins::echo_to_print ($line)."\n");
+        next
+    } 
+    
+    my $comment = Builtins::get_comment($line);
+    if ($comment eq $line) { # The whole line is a comment
+        push (@python_chunks, $comment."\n");
+        next
+    }
+    $line =~ s/$comment//;    
+
+    if ($line =~ /echo.*/) {
+        push (@python_chunks, Builtins::echo_to_print ($line));
     } elsif ($line =~ /\w+=\w+$/) {
-        push (@python_chunks, Assignment::translate ($line)."\n");
+        push (@python_chunks, Assignment::translate ($line));
     } elsif ($line =~ /\w+/) {
         # We'll assume these lines are executions
         $imports{"subprocess"} = 1;
-        push (@python_chunks, "subprocess.call(".CommandSplit::to_py_list ($line).")\n");
+        push (@python_chunks, "subprocess.call(".CommandSplit::to_py_list ($line).")");
     } else {
         push (@python_chunks, "#".$line);
     }
+
+    push (@python_chunks, " ".$comment."\n");
 }
 
 # Begin outputting the final result
