@@ -34,8 +34,8 @@ while (my $line = <>) {
     }
     $line =~ s/$comment//;    
 
-    if ($line =~ /echo.*/) {
-        push (@python_chunks, Builtins::echo_to_print ($line));
+    if (Builtins::can_handle($line)) {
+        push (@python_chunks, Builtins::handle ($line));
     } elsif ($line =~ /\w+=\w+$/) {
         push (@python_chunks, Assignment::translate ($line));
     } elsif ($line =~ /\w+/) {

@@ -4,10 +4,10 @@ use strict;
 use Builtins;
 use Test::More 'no_plan';
 
-is (Builtins::escape_echo_arg ('$var'), "var");
-is (Builtins::escape_echo_arg ("confusing"), '"confusing"');
-is (Builtins::escape_echo_arg ('money$'), '"money$"');
-is (Builtins::escape_echo_arg ('"String"'), '"String"');
+is (Builtins::escape_arg ('$var'), "var");
+is (Builtins::escape_arg ("confusing"), '"confusing"');
+is (Builtins::escape_arg ('money$'), '"money$"');
+is (Builtins::escape_arg ('"String"'), '"String"');
 
 is (Builtins::echo_to_print ("echo"), "print");
 is (Builtins::echo_to_print ("echo 123"), 'print "123"');
@@ -24,3 +24,8 @@ is (Builtins::get_comment ("no \\# comment"), "");
 is (Builtins::get_comment ("'#comment"), "#comment");
 is (Builtins::get_comment ("#comment''"), "#comment''");
 
+ok (Builtins::can_handle ("echo"));
+ok (Builtins::can_handle ("cd"));
+is (Builtins::can_handle ("doawesomethingsyeah"), 0);
+
+is (Builtins::handle ("echo 123"), Builtins::echo_to_print ("echo 123"));
