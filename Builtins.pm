@@ -7,9 +7,12 @@ my %builtins;
 $builtins{'echo'} = \&echo_to_print;
 #$builtins{'exit'} = 1;
 #$builtins{'read'} = 1;
-$builtins{cd} = \&cd_to_chdir;
+$builtins{'cd'} = \&cd_to_chdir;
 #$builtins{'test'} = 1;
 #$builtins{'expr'} = 1;
+
+my %imports;
+$imports{'cd'} = 'os';
 
 sub can_handle {
     # This function will identify if this module can handle the code
@@ -24,9 +27,18 @@ sub handle {
     # This is the generic entry point for converting a builtin function
     my @input = split (/\s/, $_[0]);
     if (defined ($builtins{$input[0]})) {
-        return &{$builtins{$input[0]}}($_[0])
+        return &{$builtins{$input[0]}}($_[0]);
     }
     return $_[0];
+}
+
+sub get_import {
+    # This returns any imports needed for the conversion of a specific line
+    my @input = split (/\s/, $_[0]);
+    if (defined ($imports{$input[0]})) {
+        return $imports{$input[0]};
+    }  
+    return '';
 }
 
 sub echo_to_print {

@@ -32,3 +32,6 @@ ok (Builtins::can_handle ("cd"));
 is (Builtins::can_handle ("doawesomethingsyeah"), 0);
 
 is (Builtins::handle ("echo 123"), Builtins::echo_to_print ("echo 123"));
+
+is (Builtins::get_import ("cd /tmp"), 'os');
+is (Builtins::get_import ("echo"), '');

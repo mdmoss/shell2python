@@ -36,6 +36,9 @@ while (my $line = <>) {
 
     if (Builtins::can_handle($line)) {
         push (@python_chunks, Builtins::handle ($line));
+        if (Builtins::get_import ($line) ne '') {
+            $imports{Builtins::get_import{$line}} = 1;
+        }   
     } elsif ($line =~ /\w+=\w+$/) {
         push (@python_chunks, Assignment::translate ($line));
     } elsif ($line =~ /\w+/) {
