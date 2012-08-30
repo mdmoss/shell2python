@@ -34,6 +34,9 @@ while (my $line = <>) {
     }
     $line =~ s/$comment//;    
 
+
+
+
     if (Builtins::can_handle($line)) {
         push (@python_chunks, Builtins::handle ($line));
         if (Builtins::get_import ($line) ne '') {

@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 use strict;
 
+use Builtins;
+
 package Assignment;
 
 sub translate {

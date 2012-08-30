@@ -26,6 +26,7 @@ is (Builtins::get_comment ('"#no comment"'), "");
 is (Builtins::get_comment ("no \\# comment"), "");
 is (Builtins::get_comment ("'#comment"), "#comment");
 is (Builtins::get_comment ("#comment''"), "#comment''");
+is (Builtins::get_comment ("#!/usr/bin/perl"), "#!/usr/bin/perl");
 
 ok (Builtins::can_handle ("echo"));
 ok (Builtins::can_handle ("cd"));
