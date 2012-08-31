@@ -75,5 +75,5 @@ foreach my $import (keys %imports) {
 }
 
 foreach my $line (@python_chunks) {
-    if ($line =~ /\S/) {print $line};
+    {print $line};
 }

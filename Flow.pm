@@ -2,12 +2,15 @@
 use strict;
 
 use Translate;
+use Builtins;
+use Command;
 
 package Flow;
 
 my %keywords;
-$keywords{'if'} = "";
+$keywords{'if'} = \&convert_if;
 $keywords{'for'} = \&convert_for;
+#$keywords{'while'} \&convert_while;
 $keywords{'do'} = \&blank;
 $keywords{'then'} = \&blank;
 $keywords{'done'} = \&blank;
@@ -46,14 +49,33 @@ sub get_indent_delta {
     return $result;
 }
 
+sub convert_if {
+    my $input = $_[0];
+    my $result = "";
+    if ($input =~ /if (.*)$/) {
+        $result = "if ".convert_condition($1).":";
+    }
+}
+
+sub convert_condition {
+    if (Builtins::can_handle($_[0])) {
+        return Builtins::handle($_[0]);
+    }
+    return Command::handle($_[0]);
+}
+
 sub convert_for {
     my $input = $_[0];
     my $result = "";
-    if ($input =~ /for (\w) in (.*)$/) {
+    if ($input =~ /for (\w+) in (.*)$/) {
         $result = "for ".$1." in ".Translate::arguments($2).":";
     }
     return $result;
 }
+
+sub convert_while {
+    return "";
+}   
 
 sub blank {
     return "";

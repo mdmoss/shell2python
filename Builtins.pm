@@ -15,8 +15,9 @@ $keywords{'cd'} = \&cd_to_chdir;
 
 sub can_handle {
     # Identifies if this module can handle the line
-    my @input = split (/\s/, $_[0]);
-    if (defined ($keywords{$input[0]})) {
+    my $input = $_[0];
+    $input =~ s/^\s*(\w+)//;
+    if (defined ($keywords{$1})) {
         return 1;
     } 
     return 0;
@@ -25,9 +26,10 @@ sub can_handle {
 sub handle {
     # This is the generic entry point for converting a line.
     # Should only be called after can_handle returns true
-    my @input = split (/\s/, $_[0]);
-    if (defined ($keywords{$input[0]})) {
-        return &{$keywords{$input[0]}}($_[0]);
+    my $input = $_[0];
+    $input =~ s/^\s*(\w+)//;
+    if (defined ($keywords{$1})) {
+        return &{$keywords{$1}}($_[0]);
     }
     return $_[0];
 }
