@@ -1,13 +1,16 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 use strict;
-
-use Builtins;
 
 package Assignment;
 
-sub translate {
-    # Handles assignments, both strings and numerics
+sub can_handle {
+    # Identifies if this module can handle a line
+    return ($_[0] =~ /[a-zA-Z]\w*=.+/);
+}
 
+sub handle {
+    # This is the generic entry point for converting a line.
+    # Should only be called after can_handle returns true
     my $input = $_[0];
     chomp ($input);
 
@@ -25,6 +28,10 @@ sub translate {
     }
 
     return "$variable = $value";
-}   
+}
+
+sub get_imports {
+    return "";
+}
 
 1;

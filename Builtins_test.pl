@@ -4,11 +4,6 @@ use strict;
 use Builtins;
 use Test::More 'no_plan';
 
-is (Builtins::escape_arg ('$var'), "var");
-is (Builtins::escape_arg ("confusing"), "'confusing'");
-is (Builtins::escape_arg ('money$'), "'money\$'");
-is (Builtins::escape_arg ("'String'"), "'String'");
-
 is (Builtins::echo_to_print ("echo"), "print");
 is (Builtins::echo_to_print ("echo 123"), "print '123'");
 is (Builtins::echo_to_print ('echo $a'), "print a");
