@@ -11,23 +11,9 @@ is (Builtins::echo_to_print ('echo $a $b 123 $c'), "print a, b, '123', c");
 
 is (Builtins::cd_to_chdir ("cd /tmp"), "os.chdir('/tmp')");
 is (Builtins::cd_to_chdir ("cd /dev"), "os.chdir('/dev')");
-
-is (Builtins::get_comment ("#comment"), "#comment");
-is (Builtins::get_comment ("no comment"), "");
-is (Builtins::get_comment ("no comment #comment"), "#comment");
-is (Builtins::get_comment ("no comment#comment"), "#comment");
-is (Builtins::get_comment ("'no # comment'"), "");
-is (Builtins::get_comment ('"#no comment"'), "");
-is (Builtins::get_comment ("no \\# comment"), "");
-is (Builtins::get_comment ("'#comment"), "#comment");
-is (Builtins::get_comment ("#comment''"), "#comment''");
-is (Builtins::get_comment ("#!/usr/bin/perl"), "#!/usr/bin/perl");
-
 ok (Builtins::can_handle ("echo"));
 ok (Builtins::can_handle ("cd"));
 is (Builtins::can_handle ("doawesomethingsyeah"), 0);
 
 is (Builtins::handle ("echo 123"), Builtins::echo_to_print ("echo 123"));
 
-is (Builtins::get_import ("cd /tmp"), 'os');
-is (Builtins::get_import ("echo"), '');

@@ -14,7 +14,6 @@ use Command;
 my %imports;
 my @python_chunks;
 
-
 while (my $line = <>) {
     chomp $line;
     
@@ -23,7 +22,7 @@ while (my $line = <>) {
         next
     } 
     
-    my $comment = Builtins::get_comment($line);
+    my $comment = Translate::get_comment($line);
     if ($comment eq $line) { # The whole line is a comment
         push (@python_chunks, $comment."\n");
         next
