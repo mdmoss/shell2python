@@ -12,6 +12,7 @@ use Builtins;
 use Command;
 
 my %imports;
+my $indent = 0;
 my @python_chunks;
 
 while (my $line = <>) {
@@ -29,35 +30,39 @@ while (my $line = <>) {
     }
     $line =~ s/$comment//; 
 
+    my $python;
+    
     my $line_imports;
-
     if (Assignment::can_handle($line)) {
         # printf ("Handled by Assignment\n");
-        push (@python_chunks, Assignment::handle ($line));
+        $python =  Assignment::handle ($line);
         $line_imports = Assignment::get_imports ($line);
         
     } elsif (Flow::can_handle($line)) {
         # printf ("Handled by Flow\n");
-        push (@python_chunks, Flow::handle ($line));
+        $python =  Flow::handle ($line);
         $line_imports = Flow::get_imports ($line);
         
     } elsif (Builtins::can_handle($line)) {
         # printf ("Handled by Builtins\n");
-        push (@python_chunks, Builtins::handle ($line));
+        $python =  Builtins::handle ($line);
         $line_imports = Builtins::get_imports ($line);
         
     } elsif (Command::can_handle($line)) {
         # printf ("Handled by Command\n");
-        push (@python_chunks, Command::handle ($line));
+        $python =  Command::handle ($line);
         $line_imports = Command::get_imports ($line);
     }
-
     
+    $indent += Flow::get_indent_delta($line);
+    $python = $python." ".$comment;
+    if ($python =~ /\S/) {
+        push (@python_chunks, " "x$indent.$python."\n");
+    }
+
     if ($line_imports ne "") {
         @imports {keys %{$line_imports}} = values %{$line_imports};
     }
-    
-    push (@python_chunks, " ".$comment."\n");
 }
 
 # Begin outputting the final result
@@ -70,5 +75,5 @@ foreach my $import (keys %imports) {
 }
 
 foreach my $line (@python_chunks) {
-    print $line;
+    if ($line =~ /\S/) {print $line};
 }
