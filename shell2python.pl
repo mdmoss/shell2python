@@ -22,11 +22,13 @@ my @python_chunks;
 
 while (my $line = <>) {
     chomp $line;
+    
     if ($line =~ /^#!/ && $. == 1) {
         # This is the shebang. It can be ignored
         next
     } 
     
+    # This block can go, because Eval will be deal with comments
     my $comment = Builtins::get_comment($line);
     if ($comment eq $line) { # The whole line is a comment
         push (@python_chunks, $comment."\n");
@@ -34,9 +36,13 @@ while (my $line = <>) {
     }
     $line =~ s/$comment//;    
 
+    #Here's some beauty
+    # $indent += Eval::get_indent_delta ($line);
+    # push (@python_chunks, " " x $indent.Eval::convert($line)."\n");
+    # %line_imports = Eval::get_imports ($line);
+    # @imports{keys %line_imports} = values %line_imports;
 
-
-
+    # This block can also go
     if (Builtins::can_handle($line)) {
         push (@python_chunks, Builtins::handle ($line));
         if (Builtins::get_import ($line) ne '') {
