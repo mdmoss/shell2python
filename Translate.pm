@@ -21,7 +21,12 @@ sub escape_arg {
     # Removes dollar sign from variables, or adds quotations to strings
     my $input = $_[0];
     if ($input =~ /^\$/) {
-        $input =~ s/^\$//;
+        if ($input =~ /^\s*\$(\d+)\s*$/) {
+            # It's in argv
+            $input = "sys.argv[".$1."]";
+        } else {
+            $input =~ s/^\$//;
+        }
     } elsif ($input =~ /['"].*['"]/) {
         $input = $input; # No change at this point
     } elsif ($input =~ /['"]/) {

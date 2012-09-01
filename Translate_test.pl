@@ -8,6 +8,7 @@ is (Translate::escape_arg ('$var'), "var");
 is (Translate::escape_arg ("confusing"), "'confusing'");
 is (Translate::escape_arg ('money$'), "'money\$'");
 is (Translate::escape_arg ("'String'"), "'String'");
+is (Translate::escape_arg ('$1'), "sys.argv[1]");
 
 is (Translate::arguments ('var'), "'var'");
 is (Translate::arguments ('var var'), "'var', 'var'");
