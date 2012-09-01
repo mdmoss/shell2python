@@ -1,6 +1,8 @@
 #!/usr/bin/perl -w
 use strict;
 
+use Translate;
+
 package Command;
 
 sub can_handle {
