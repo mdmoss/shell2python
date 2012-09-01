@@ -39,7 +39,7 @@ sub get_indent_delta {
     my $result = 0; 
     if ($_[0] =~ /(do|then)\s*$/) {
         $result = 4;
-    } elsif ($_[0] =~ /(done|fi)\s*$/) {
+    } elsif ($_[0] =~ /(done|fi|elif)\s*$/) {
         $result = -4;
     }
     return $result;

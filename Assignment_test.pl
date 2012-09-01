@@ -14,3 +14,4 @@ is (Assignment::handle ("variable=hello"), "variable = 'hello'");
 is (Assignment::handle ("variable=123"), 'variable = 123');
 is (Assignment::handle ("fruit=lemon32"), "fruit = 'lemon32'");
 is (Assignment::handle ("entry=\$1"), "entry = sys.argv[1]");
+is (Assignment::handle ("files=\$\@)"), "files = sys.argv[1:]");

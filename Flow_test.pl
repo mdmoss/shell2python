@@ -14,6 +14,7 @@ is (Flow::get_indent_delta ("do"), 4);
 is (Flow::get_indent_delta ("done"), -4);
 is (Flow::get_indent_delta ("fi"), -4);
 is (Flow::get_indent_delta ("words"), 0);
+is (Flow::get_indent_delta ("elif"), -4);
 
 is (Flow::handle ("do"), "");
 is (Flow::handle ("then"), "");

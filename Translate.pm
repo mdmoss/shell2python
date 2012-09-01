@@ -24,6 +24,9 @@ sub escape_arg {
         if ($input =~ /^\s*\$(\d+)\s*$/) {
             # It's in argv
             $input = "sys.argv[".$1."]";
+        } elsif ($input =~ /^\s*\$\@\s*/){
+            # It's all the argvs
+           $input = "sys.argv[1:]";
         } else {
             $input =~ s/^\$//;
         }
