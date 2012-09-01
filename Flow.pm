@@ -73,7 +73,13 @@ sub convert_for {
     my $input = $_[0];
     my $result = "";
     if ($input =~ /for (\w+) in (.*)$/) {
-        $result = "for ".$1." in ".Translate::arguments($2).":";
+        my $variable = $1;
+        my $iterables = $2;
+        if ($iterables =~ /\*.*/) {
+            $result = 'for '.$variable.' in sorted(glob.glob('.Translate::arguments($iterables).')):';
+        } else {
+            $result = "for ".$variable." in ".Translate::arguments($iterables).":";
+        }
     }
     return $result;
 }
