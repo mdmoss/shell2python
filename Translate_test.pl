@@ -25,3 +25,21 @@ is (Translate::get_comment ("no \\# comment"), "");
 is (Translate::get_comment ("'#comment"), "#comment");
 is (Translate::get_comment ("#comment''"), "#comment''");
 is (Translate::get_comment ("#!/usr/bin/perl"), "#!/usr/bin/perl");
+
+is (Translate::strip_first_quote ('"test"123'), "123");
+is (Translate::strip_first_quote ('"test""123"'), '"123"');
+is (Translate::strip_first_quote ("'test'123"), "123");
+is (Translate::strip_first_quote ("'test''123'"), "'123'");
+is (Translate::strip_first_quote ("'it\\'s amazing'"), "");
+
+is (Translate::strip_quotes ("'this is quoted'"), "");
+is (Translate::strip_quotes ("a'q'b'q'c'q'"), "abc");
+is (Translate::strip_quotes ("'quote\"quote\"quote'"), "");
+is (Translate::strip_quotes ('"quote\'quote\'quote"'), "");
+is (Translate::strip_quotes ('"quote""quote"\'quote\''), "");
+
+ok (${Translate::introspect_imports("sys.stdin.read()")}{'sys'});
+ok (${Translate::introspect_imports("while sys.stdin.read():")}{'sys'});
+ok (${Translate::introspect_imports("subprocess.call('pwd')")}{'subprocess'});
+ok (${Translate::introspect_imports("for i in sorted(glob.glob('*.c')):")}{'glob'});
+ok (${Translate::introspect_imports("for i in sys.argv[0]")}{'sys'});

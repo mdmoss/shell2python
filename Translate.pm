@@ -51,4 +51,39 @@ sub get_comment {
     return $input;
 }
 
+sub introspect_imports {
+    # Attempts to identify any modules that need importing in a line.
+    # Returns these modules as the keys of a hash
+    my $line = $_[0];
+    $line = strip_quotes($line);
+    my %imports = ();
+    while ($line =~ /\s*(\w+)\./) {
+        $imports{$1} = 1; 
+        $line =~ s/$1\.\S*//;
+    }
+    return \%imports;
+}
+
+sub strip_quotes {
+    # Returns the input without any quoted sections 
+    my $string = $_[0];
+    $string =~ s/(["'])(?:\\\1|.)*?\1//g;
+    return $string;
+}
+
+sub strip_first_quote {
+    # Returns the string with the first quoted section stripped
+
+    #
+    # There's a great article on this regex at
+    # http://blog.stevenlevithan.com/archives/match-quoted-string
+    # His solution was elegant enough to replace four lines of mine,
+    # so I've used it here.
+    #
+
+    my $string = $_[0];
+    $string =~ s/(["'])(?:\\\1|.)*?\1//;
+    return $string;
+}
+
 1;

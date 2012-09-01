@@ -34,28 +34,25 @@ while (my $line = <>) {
 
     my $python;
     
-    my $line_imports;
     if (Assignment::can_handle($line)) {
         # printf ("Handled by Assignment\n");
         $python =  Assignment::handle ($line);
-        $line_imports = Assignment::get_imports ($line);
         
     } elsif (Flow::can_handle($line)) {
         # printf ("Handled by Flow\n");
         $python =  Flow::handle ($line);
-        $line_imports = Flow::get_imports ($line);
         
     } elsif (Builtins::can_handle($line)) {
         # printf ("Handled by Builtins\n");
         $python =  Builtins::handle ($line);
-        $line_imports = Builtins::get_imports ($line);
         
     } elsif (Command::can_handle($line)) {
         # printf ("Handled by Command\n");
         $python =  Command::handle ($line);
-        $line_imports = Command::get_imports ($line);
     }
-    
+   
+    my $line_imports = Translate::introspect_imports($python);
+
     $indent += Flow::get_indent_delta($line);
     $python = $python." ".$comment;
     if ($python =~ /\S/) {
