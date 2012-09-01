@@ -29,6 +29,8 @@ while (my $line = <>) {
         next
     }
     $line =~ s/$comment//; 
+    $line =~ s/^\s*//;
+    $line =~ s/\s*$//;
 
     my $python;
     

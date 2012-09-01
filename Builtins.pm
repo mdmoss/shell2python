@@ -7,8 +7,8 @@ package Builtins;
 
 my %keywords;
 $keywords{'echo'} = \&echo_to_print;
-#$keywords{'exit'} = 1;
-#$keywords{'read'} = 1;
+$keywords{'exit'} = \&exit_to_exit;
+$keywords{'read'} = \&read_to_stdin;
 $keywords{'cd'} = \&cd_to_chdir;
 #$keywords{'test'} = 1;
 #$keywords{'expr'} = 1;
@@ -36,6 +36,8 @@ sub handle {
 
 my %imports;
 $imports{'cd'} = 'os';
+$imports{'exit'} = 'sys';
+$imports{'read'} = 'sys';
 
 sub get_imports {
     # This returns any imports needed for the conversion of a specific line
@@ -68,21 +70,19 @@ sub cd_to_chdir {
     return $result;
 }
 
-sub get_comment {
-    # Returns any comments present in a string
+sub exit_to_exit {
     my $input = $_[0];
-    if ($input =~ /^[^'"\\]*?(#.*)$/) {
-        # It's a simple comment. Return it
-         return $1;
+    if ($input =~ /exit (\d+)/) {
+        return "sys.exit(".$1.")";
     }
-    $input =~ s/\\#//g; 
-    # Strip all matched quotes and strings from start string
-    while ($input =~ /([^#]|\\#)*(['"]).*?\2/) {
-        $input =~ s/(['"])[^\1]*\1//;
-    }
-    $input =~ s/(['"]).*?\1//g;
-    $input =~ s/^[^#]*//;
+    return $input;
+}
 
+sub read_to_stdin {
+    my $input = $_[0];
+    if ($input =~ /read (\w+)/) {
+        return $1." = sys.stdin.readline().rstrip()";
+    }
     return $input;
 }
 
