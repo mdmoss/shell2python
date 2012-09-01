@@ -23,5 +23,3 @@ is (Flow::handle ("for x in one two three"), "for x in 'one', 'two', 'three':");
 is (Flow::handle ("for word in Houston 1202 words"), "for word in 'Houston', '1202', 'words':");
 is (Flow::handle ('for file in *.c'), "for file in sorted(glob.glob('*.c')):");
 
-ok (${Flow::get_imports('for file in *.c')}{'glob'});
-ok (not defined ${Flow::get_imports('for word in one two three')}{glob});

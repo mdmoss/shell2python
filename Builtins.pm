@@ -34,24 +34,6 @@ sub handle {
     return $_[0];
 }
 
-my %imports;
-$imports{'cd'} = 'os';
-$imports{'exit'} = 'sys';
-$imports{'read'} = 'sys';
-
-sub get_imports {
-    # This returns any imports needed for the conversion of a specific line
-    my @input = split (/\s/, $_[0]);
-    
-    my %result = ();
-    
-    if (defined ($imports{$input[0]})) {
-        $result{$imports{$input[0]}} = 1;
-    }  
-    
-    return \%result;
-}
-
 sub echo_to_print {
     # Anything with an unescaped $ is a variable. Otherwise, string.    
     my $input = $_[0];

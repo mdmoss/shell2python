@@ -35,15 +35,6 @@ sub handle {
     return $_[0];
 }
 
-sub get_imports {
-    my %imports = ();
-    if ($_[0] =~ /\s*for \w* in \*.*/) {
-        # It's going to be a glob.
-        $imports{'glob'} = 1;
-    }
-    return \%imports;
-}
-
 sub get_indent_delta {
     my $result = 0; 
     if ($_[0] =~ /(do|then)\s*$/) {

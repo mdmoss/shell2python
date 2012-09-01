@@ -20,10 +20,4 @@ sub handle {
     return 'subprocess.call(['.Translate::arguments($_[0]).'])';
 }
 
-sub get_imports {
-    my %result;
-    $result{'subprocess'} = 1;
-    return \%result;
-}
-
 1;

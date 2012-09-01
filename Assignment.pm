@@ -30,8 +30,4 @@ sub handle {
     return "$variable = $value";
 }
 
-sub get_imports {
-    return "";
-}
-
 1;
