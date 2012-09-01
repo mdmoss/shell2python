@@ -10,6 +10,6 @@ is (Assignment::can_handle ("v=some expression"), 1);
 is (Assignment::can_handle ("1=lalala"), "");
 is (Assignment::can_handle ("aa1=123"), 1);
 
-is (Assignment::handle ("variable=hello"), 'variable = "hello"');
+is (Assignment::handle ("variable=hello"), "variable = 'hello'");
 is (Assignment::handle ("variable=123"), 'variable = 123');
-is (Assignment::handle ("fruit=lemon32"), 'fruit = "lemon32"');
+is (Assignment::handle ("fruit=lemon32"), "fruit = 'lemon32'");

@@ -1,6 +1,8 @@
 #!/usr/bin/perl -w
 use strict;
 
+use Translate;
+
 package Assignment;
 
 sub can_handle {
@@ -14,17 +16,16 @@ sub handle {
     my $input = $_[0];
     chomp ($input);
 
-    $input =~ /(\w+)=.+/;
+    $input =~ /(\w+)=(.+)/;
     my $variable = $1;
+    my $rhs = $2;
+    my $value = "";
 
-    my $value;
-    if ($input =~ /\w+=(\d+)$/) {
-        # It's a pure numeric. Assume a number.
-        $value = $1; 
+    if ($rhs =~ /^\s*\d+\s*$/) {
+        # It's a pure numeric
+        $value = $rhs;
     } else {
-        # It's mixed. A string will do.
-        $input =~ /\w+=(\w+)$/;
-        $value = '"'.$1.'"';
+        $value = Translate::escape_arg($2);
     }
 
     return "$variable = $value";
