@@ -5,12 +5,28 @@ package Translate;
 
 sub arguments {
     # May need a little refining. Also, add backtics etc
-
     my $result = "";
-    my @arguments = split (/\s+/, $_[0]);
-    foreach my $i (0..($#arguments)) {
-        next unless ($arguments[$i] ne "");
-        $result = $result.escape_arg($arguments[$i]).", "; 
+
+    my $args = $_[0];
+    $args =~ s/^\s*//;
+
+    while ($args ne "") {
+        if ($args =~ /^([^'"\s]+)\s*/) {
+            # It's not quoted. The usual escape will do the job
+            $result = $result.escape_arg($1).", ";
+            $args =~ s/^([^'"\s]+)\s*//;
+        } elsif ($args =~ /^'((\\'|.)*?)'/) {
+            # It's got single quotes. Do it directly
+            $result = $result."'".$1."', ";
+            $args =~ s/^'(\\'|.)*?'\s*//;
+        } elsif ($args =~ /^"((\\"|.)*?)"/) {
+            # It's got double quotes. Eventually deal with metachars here
+            $result = $result.'"'.$1.'", ';
+            $args =~ s/^"(\\"|.)*?"\s*//;
+        } else {
+            last;
+            # This is a worst-case bail out to kill an infinite loop.
+        }
     }
     # Remove trailing whitespace, and possible comma whitespace
     $result =~ s/\s*(,\s*)?$//;
@@ -30,8 +46,10 @@ sub escape_arg {
         } else {
             $input =~ s/^\$//;
         }
+    } elsif ($input =~ /^\s*\d*\s*$/) {
+        # It's numeric
     } elsif ($input =~ /['"].*['"]/) {
-        $input = $input; # No change at this point
+        # It's quoted
     } elsif ($input =~ /['"]/) {
         $input =~ s/['"]//g;
         $input = "'".$input."'";

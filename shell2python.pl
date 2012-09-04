@@ -55,7 +55,12 @@ while (my $line = <>) {
 
     $indent += Flow::get_indent_delta($line);
     $python = $python." ".$comment;
-    if ($python =~ /\S/) {
+    $python =~ s/\s*$//;
+
+    if ($python =~ /^else:/) {
+        # This is a shameful workaround, but should do the job.
+        push (@python_chunks, " "x($indent-4).$python."\n");
+    } elsif ($python) {
         push (@python_chunks, " "x$indent.$python."\n");
     }
 
@@ -69,7 +74,7 @@ while (my $line = <>) {
 # We're targeting python 2.7, so it makes sense to always use it
 print "#!/usr/bin/python2.7\n";
 
-foreach my $import (keys %imports) {
+foreach my $import (sort (keys %imports)) {
     print "import $import\n";
 }
 

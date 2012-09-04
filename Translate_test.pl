@@ -10,12 +10,17 @@ is (Translate::escape_arg ('money$'), "'money\$'");
 is (Translate::escape_arg ("'String'"), "'String'");
 is (Translate::escape_arg ('$1'), "sys.argv[1]");
 is (Translate::escape_arg ('$@'), "sys.argv[1:]");
+is (Translate::escape_arg ('1'), '1');
+is (Translate::escape_arg ('2'), '2');
 
 is (Translate::arguments ('var'), "'var'");
 is (Translate::arguments ('var var'), "'var', 'var'");
 is (Translate::arguments ('$var'), "var");
 is (Translate::arguments ('$var1 $var2'), "var1, var2");
 is (Translate::arguments ('str1 $var1 $var2 str2'), "'str1', var1, var2, 'str2'");
+is (Translate::arguments ('123'), 123);
+is (Translate::arguments ('123 hi'), "123, 'hi'");
+is (Translate::arguments ("'words words words'"), "'words words words'");
 
 is (Translate::get_comment ("#comment"), "#comment");
 is (Translate::get_comment ("no comment"), "");

@@ -10,7 +10,7 @@ $keywords{'echo'} = \&echo_to_print;
 $keywords{'exit'} = \&exit_to_exit;
 $keywords{'read'} = \&read_to_stdin;
 $keywords{'cd'} = \&cd_to_chdir;
-#$keywords{'test'} = 1;
+$keywords{'test'} = \&test_to_equals;
 #$keywords{'expr'} = 1;
 
 sub can_handle {
@@ -27,11 +27,11 @@ sub handle {
     # This is the generic entry point for converting a line.
     # Should only be called after can_handle returns true
     my $input = $_[0];
-    $input =~ s/^\s*(\w+)//;
+    $input =~ /^\s*(\w+)/;
     if (defined ($keywords{$1})) {
-        return &{$keywords{$1}}($_[0]);
+        return &{$keywords{$1}}($input);
     }
-    return $_[0];
+    return $input;
 }
 
 sub echo_to_print {
@@ -68,4 +68,14 @@ sub read_to_stdin {
     return $input;
 }
 
+sub test_to_equals {
+    my $input = $_[0];
+    my $result = "";
+    if ($input =~ /test (\S+) (\S+) (\S+)/) {
+        if ($2 eq "=") {
+            $result = Translate::arguments ($1)." == ".Translate::arguments ($3);
+        }
+    }
+    return $result;
+}        
 1;

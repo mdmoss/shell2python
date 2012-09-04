@@ -9,8 +9,10 @@ package Flow;
 
 my %keywords;
 $keywords{'if'} = \&convert_if;
+$keywords{'elif'} = \&convert_elif;
 $keywords{'for'} = \&convert_for;
 #$keywords{'while'} \&convert_while;
+$keywords{'else'} = \&convert_else;
 $keywords{'do'} = \&blank;
 $keywords{'then'} = \&blank;
 $keywords{'done'} = \&blank;
@@ -53,6 +55,14 @@ sub convert_if {
     }
 }
 
+sub convert_elif {
+    my $input = $_[0];
+    my $result = "";
+    if ($input =~ /elif (.*)$/) {
+        $result = "elif ".convert_condition($1).":";
+    }
+}
+
 sub convert_condition {
     if (Builtins::can_handle($_[0])) {
         return Builtins::handle($_[0]);
@@ -67,7 +77,8 @@ sub convert_for {
         my $variable = $1;
         my $iterables = $2;
         if ($iterables =~ /\*.*/) {
-            $result = 'for '.$variable.' in sorted(glob.glob('.Translate::arguments($iterables).')):';
+            # This is a special case for the use of " for some reason.
+            $result = 'for '.$variable.' in sorted(glob.glob("'.$iterables.'")):';
         } else {
             $result = "for ".$variable." in ".Translate::arguments($iterables).":";
         }
@@ -78,6 +89,10 @@ sub convert_for {
 sub convert_while {
     return "";
 }   
+
+sub convert_else {
+    return "else:";
+}
 
 sub blank {
     return "";
