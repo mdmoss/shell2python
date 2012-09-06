@@ -72,7 +72,7 @@ while (my $line = <>) {
 # Begin outputting the final result
 
 # We're targeting python 2.7, so it makes sense to always use it
-print "#!/usr/bin/python2.7\n";
+print "#!/usr/bin/python2.7 -u\n";
 
 foreach my $import (sort (keys %imports)) {
     print "import $import\n";
