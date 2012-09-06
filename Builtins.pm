@@ -10,7 +10,7 @@ $keywords{'echo'} = \&echo_to_print;
 $keywords{'exit'} = \&exit_to_exit;
 $keywords{'read'} = \&read_to_stdin;
 $keywords{'cd'} = \&cd_to_chdir;
-$keywords{'test'} = \&test_to_equals;
+$keywords{'test'} = \&convert_test;
 #$keywords{'expr'} = 1;
 
 sub can_handle {
@@ -68,10 +68,14 @@ sub read_to_stdin {
     return $input;
 }
 
-sub test_to_equals {
+sub convert_test {
     my $input = $_[0];
     my $result = "";
-    if ($input =~ /test (\S+) (\S+) (\S+)/) {
+    if ($input =~ /test -r (\S+)/) {
+        $result = "os.access(".Translate::arguments($1).", os.R_OK)";
+    } elsif ($input =~ /test -d (\S+)/) {
+        $result = "os.path.isdir(".Translate::arguments($1).")";
+    } elsif ($input =~ /test (\S+) (\S+) (\S+)/) {
         if ($2 eq "=") {
             $result = Translate::arguments ($1)." == ".Translate::arguments ($3);
         }

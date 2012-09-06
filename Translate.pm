@@ -83,9 +83,12 @@ sub introspect_imports {
     my $line = $_[0];
     $line = strip_quotes($line);
     my %imports = ();
-    while ($line =~ /\s*(\w+)\./) {
-        $imports{$1} = 1; 
-        $line =~ s/$1\.\S*//;
+    while ($line =~ /((\w+\.)+)/) {
+        my $import = $1;
+        $import =~ s/\.$//;
+        $import =~ s/sys.stdin/sys/; # Terrible fix for non-standard things
+        $imports{$import} = 1; 
+        $line =~ s/((\w+\.)+)//;
     }
     return \%imports;
 }
