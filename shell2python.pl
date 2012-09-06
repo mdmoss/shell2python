@@ -21,7 +21,7 @@ while (my $line = <>) {
     if ($line =~ /^#!/ && $. == 1) {
         # This is the shebang. It can be ignored
         next
-    } 
+    }
     
     my $comment = Translate::get_comment($line);
     if ($comment eq $line) { # The whole line is a comment
@@ -54,10 +54,10 @@ while (my $line = <>) {
     my $line_imports = Translate::introspect_imports($python);
 
     $indent += Flow::get_indent_delta($line);
-    $python = $python." ".$comment;
+    $python = $python."  ".$comment;  # Note double space as per PEP-8
     $python =~ s/\s*$//;
 
-    if ($python =~ /^else:/) {
+    if ($python =~ /else:/) {
         # This is a shameful workaround, but should do the job.
         push (@python_chunks, " "x($indent-4).$python."\n");
     } elsif ($python) {

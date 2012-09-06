@@ -2,6 +2,7 @@
 use strict;
 
 use Translate;
+use Builtins;
 
 package Assignment;
 
@@ -24,6 +25,8 @@ sub handle {
     if ($rhs =~ /^\s*\d+\s*$/) {
         # It's a pure numeric
         $value = $rhs;
+    } elsif (Builtins::can_handle($rhs)) {
+        $value = Builtins::handle($rhs);
     } else {
         $value = Translate::escape_arg($2);
     }

@@ -20,12 +20,18 @@ is (Builtins::convert_test ("test matt = great"), "'matt' == 'great'");
 is (Builtins::convert_test ('test $number = 9'), "number == 9");
 is (Builtins::convert_test ('test -r some/file'), "os.access('some/file', os.R_OK)");
 is (Builtins::convert_test ('test -d some/file'), "os.path.isdir('some/file')");
-is (Builtins::convert_test ("test 1 -eq 2"), "int(1) == int(2)");
-is (Builtins::convert_test ("test 1 -ne 2"), "int(1) != int(2)");
-is (Builtins::convert_test ("test 1 -gt 2"), "int(1) > int(2)");
-is (Builtins::convert_test ("test 1 -ge 2"), "int(1) >= int(2)");
-is (Builtins::convert_test ("test 1 -lt 2"), "int(1) < int(2)");
-is (Builtins::convert_test ("test 1 -le 2"), "int(1) <= int(2)");
+is (Builtins::convert_test ("test 1 -eq \$var"), "1 == int(var)");
+is (Builtins::convert_test ("test 1 -ne \$var"), "1 != int(var)");
+is (Builtins::convert_test ("test 1 -gt \$var"), "1 > int(var)");
+is (Builtins::convert_test ("test 1 -ge \$var"), "1 >= int(var)");
+is (Builtins::convert_test ("test 1 -lt \$var"), "1 < int(var)");
+is (Builtins::convert_test ("test 1 -le \$var"), "1 <= int(var)");
+
+is (Builtins::convert_expr ("expr 1 \+ \$var"), '1 + int(var)');
+is (Builtins::convert_expr ("expr 1 \- \$var"), '1 - int(var)');
+is (Builtins::convert_expr ("expr 1 \* \$var"), '1 * int(var)');
+is (Builtins::convert_expr ("expr 1 \/ \$var"), '1 / int(var)');
+is (Builtins::convert_expr ("expr 1 \% \$var"), '1 % int(var)');
 
 ok (Builtins::can_handle ("echo"));
 ok (Builtins::can_handle ("cd"));
