@@ -78,6 +78,8 @@ sub convert_test {
     } elsif ($input =~ /test (\S+) (\S+) (\S+)/) {
         if ($2 eq "=") {
             $result = Translate::arguments ($1)." == ".Translate::arguments ($3);
+        } elsif ($2 eq "-le") {
+            $result = "int(".Translate::arguments ($1).") <= int(".Translate::arguments ($3).")";
         }
     }
     return $result;
