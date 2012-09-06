@@ -20,6 +20,13 @@ is (Builtins::convert_test ("test matt = great"), "'matt' == 'great'");
 is (Builtins::convert_test ('test $number = 9'), "number == 9");
 is (Builtins::convert_test ('test -r some/file'), "os.access('some/file', os.R_OK)");
 is (Builtins::convert_test ('test -d some/file'), "os.path.isdir('some/file')");
+is (Builtins::convert_test ("test 1 -eq 2"), "int(1) == int(2)");
+is (Builtins::convert_test ("test 1 -ne 2"), "int(1) != int(2)");
+is (Builtins::convert_test ("test 1 -gt 2"), "int(1) > int(2)");
+is (Builtins::convert_test ("test 1 -ge 2"), "int(1) >= int(2)");
+is (Builtins::convert_test ("test 1 -lt 2"), "int(1) < int(2)");
+is (Builtins::convert_test ("test 1 -le 2"), "int(1) <= int(2)");
+
 ok (Builtins::can_handle ("echo"));
 ok (Builtins::can_handle ("cd"));
 is (Builtins::can_handle ("doawesomethingsyeah"), 0);
@@ -27,4 +34,4 @@ ok (Builtins::can_handle ("\t\t      echo"));
 
 is (Builtins::handle ("echo 123"), Builtins::echo_to_print ("echo 123"));
 is (Builtins::handle ("exit 999"), Builtins::exit_to_exit ("exit 999"));
-is (Builtins::handle ("test matt = great"), Builtins::convert_test ("test matt = great")); 
+is (Builtins::handle ("test matt = great"), Builtins::convert_test ("test matt = great"));

@@ -68,6 +68,14 @@ sub read_to_stdin {
     return $input;
 }
 
+my %numeric_tests;
+$numeric_tests{'-eq'} = '==';
+$numeric_tests{'-ne'} = '!=';
+$numeric_tests{'-gt'} = '>';
+$numeric_tests{'-ge'} = '>=';
+$numeric_tests{'-lt'} = '<';
+$numeric_tests{'-le'} = '<=';
+
 sub convert_test {
     my $input = $_[0];
     my $result = "";
@@ -78,10 +86,10 @@ sub convert_test {
     } elsif ($input =~ /test (\S+) (\S+) (\S+)/) {
         if ($2 eq "=") {
             $result = Translate::arguments ($1)." == ".Translate::arguments ($3);
-        } elsif ($2 eq "-le") {
-            $result = "int(".Translate::arguments ($1).") <= int(".Translate::arguments ($3).")";
+        } elsif (defined ($numeric_tests{$2})) {
+            $result = "int(".Translate::arguments ($1).") ".$numeric_tests{$2}." int(".Translate::arguments ($3).")";
         }
     }
     return $result;
-}        
+}
 1;
