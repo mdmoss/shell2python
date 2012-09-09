@@ -66,11 +66,30 @@ sub convert_elif {
     return $result;
 }
 
-sub convert_condition {
-    if (Builtins::can_handle($_[0])) {
-        return Builtins::handle($_[0]);
+sub convert_while {
+    my $input = $_[0];
+    my $result = "";
+    if ($input =~ /while\s+(.*)$/) {
+        $result = "while ".convert_condition($1).":";
     }
-    return Translate::arguments($_[0]);
+    return $result;
+}
+
+sub convert_condition {
+
+    my $condition = $_[0];
+    my $result = "";
+    
+    if ($condition =~ /^\$/) {
+        # It's a variable
+        $result = Translate::arguments($condition);
+    } elsif (Builtins::can_handle($condition)){
+        $result = Builtins::handle($condition); 
+    } else {
+        $result = "not ".Command::handle($condition);
+    }
+
+    return $result;
 }
 
 sub convert_for {
@@ -89,22 +108,6 @@ sub convert_for {
     return $result;
 }
 
-sub convert_while {
-    my $input = $_[0];
-    my $result = "";
-    if ($input =~ /while\s+(.*)$/) {
-        my $condition = $1;
-        if ($condition =~ /^\$/) {
-            # It's a variable
-            $result = "while ".Translate::arguments($condition).":";
-        } elsif (Builtins::can_handle($condition)){
-            $result = "while ".Builtins::handle($condition).":"; 
-        } else {
-            $result = "while not ".Command::handle($condition).":";
-        }
-    }
-    return $result;
-}   
 
 sub convert_else {
     return "else:";
