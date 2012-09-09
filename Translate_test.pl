@@ -10,6 +10,7 @@ is (Translate::escape_arg ('money$'), "'money\$'");
 is (Translate::escape_arg ("'String'"), "'String'");
 is (Translate::escape_arg ('$1'), "sys.argv[1]");
 is (Translate::escape_arg ('$@'), "sys.argv[1:]");
+is (Translate::escape_arg ('$#'), "len(sys.argv[1:])");
 is (Translate::escape_arg ('1'), '1');
 is (Translate::escape_arg ('2'), '2');
 
@@ -21,6 +22,7 @@ is (Translate::arguments ('str1 $var1 $var2 str2'), "'str1', var1, var2, 'str2'"
 is (Translate::arguments ('123'), 123);
 is (Translate::arguments ('123 hi'), "123, 'hi'");
 is (Translate::arguments ("'words words words'"), "'words words words'");
+is (Translate::arguments ('$#'), "len(sys.argv[1:])"); 
 
 # Testing the convert type passing thing. Function prototypes would be nice here.
 is (Translate::arguments ('$var', 'str'), "str(var)");
@@ -36,6 +38,7 @@ is (Translate::get_comment ("no \\# comment"), "");
 is (Translate::get_comment ("'#comment"), "#comment");
 is (Translate::get_comment ("#comment''"), "#comment''");
 is (Translate::get_comment ("#!/usr/bin/perl"), "#!/usr/bin/perl");
+is (Translate::get_comment ('$#'), "");
 
 is (Translate::strip_first_quote ('"test"123'), "123");
 is (Translate::strip_first_quote ('"test""123"'), '"123"');

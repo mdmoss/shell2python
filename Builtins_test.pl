@@ -17,7 +17,7 @@ is (Builtins::exit_to_exit ("exit 7"), "sys.exit(7)");
 is (Builtins::read_to_stdin ("read line"), "line = sys.stdin.readline().rstrip()");
 
 is (Builtins::convert_test ("test matt = great"), "'matt' == 'great'");
-is (Builtins::convert_test ('test $number = 9'), "str(number) == 9");
+is (Builtins::convert_test ('test $number = 9'), "number == 9");
 is (Builtins::convert_test ('test -r some/file'), "os.access('some/file', os.R_OK)");
 is (Builtins::convert_test ('test -d some/file'), "os.path.isdir('some/file')");
 is (Builtins::convert_test ("test 1 -eq \$var"), "1 == int(var)");

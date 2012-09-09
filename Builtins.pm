@@ -116,7 +116,7 @@ sub convert_test {
         my $lhs = $1;
         my $rhs = $3;
         if ($2 eq "=") {
-            $result = Translate::arguments ($lhs, "str")." == ".Translate::arguments ($rhs, "str");
+            $result = Translate::arguments ($lhs)." == ".Translate::arguments ($rhs);
         } elsif (defined ($numeric_tests{$2})) {
             $lhs = Translate::arguments($lhs, "int");
             $rhs = Translate::arguments($rhs, "int");

@@ -50,6 +50,9 @@ sub escape_arg {
         } elsif ($input =~ /^\s*\$\@\s*/){
             # It's all the argvs
            $input = "sys.argv[1:]";
+        } elsif ($input =~ /^\s*\$\#\s*/){
+            # It's the length of the arg array
+            $input = "len(sys.argv[1:])";
         } else {
             if ($conversion_type) {
                 $input =~ /^\$(.*)/;
@@ -74,11 +77,12 @@ sub escape_arg {
 sub get_comment {
     # Returns any comments present in a string
     my $input = $_[0];
-    if ($input =~ /^[^'"\\]*?(#.*)$/) {
+    if ($input =~ /^[^'"\\\$]*?(#.*)$/) {
         # It's a simple comment. Return it
          return $1;
     }
-    $input =~ s/\\#//g; 
+    $input =~ s/\\\#//g; 
+    $input =~ s/\$\#//g; # This is a bit lazy, but I'll fix it later if need be
     # Strip all matched quotes and strings from start string
     while ($input =~ /([^#]|\\#)*(['"]).*?\2/) {
         $input =~ s/(['"])[^\1]*\1//;
