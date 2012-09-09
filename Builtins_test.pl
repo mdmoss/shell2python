@@ -34,6 +34,9 @@ is (Builtins::convert_expr ("expr 1 \- \$var"), '1 - int(var)');
 is (Builtins::convert_expr ("expr 1 \* \$var"), '1 * int(var)');
 is (Builtins::convert_expr ("expr 1 \/ \$var"), '1 / int(var)');
 is (Builtins::convert_expr ("expr 1 \% \$var"), '1 % int(var)');
+is (Builtins::convert_expr ("expr 1 \+ 2 \+ 3"), '1 + 2 + 3');
+is (Builtins::convert_expr ("expr 1 \% \$var \- 4"), '1 % int(var) - 4');
+is (Builtins::convert_expr ("expr 1 \% \$var / \$var"), '1 % int(var) / var');
 
 ok (Builtins::can_handle ("echo"));
 ok (Builtins::can_handle ("cd"));
