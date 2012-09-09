@@ -13,6 +13,8 @@ is (Translate::escape_arg ('$@'), "sys.argv[1:]");
 is (Translate::escape_arg ('$#'), "len(sys.argv[1:])");
 is (Translate::escape_arg ('1'), '1');
 is (Translate::escape_arg ('2'), '2');
+is (Translate::escape_arg ('-1'), '-1');
+is (Translate::escape_arg ('-300'), '-300');
 
 is (Translate::arguments ('var'), "'var'");
 is (Translate::arguments ('var var'), "'var', 'var'");

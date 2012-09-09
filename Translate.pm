@@ -61,7 +61,7 @@ sub escape_arg {
                 $input =~ s/^\$//;
             }
         }
-    } elsif ($input =~ /^\s*\d*\s*$/) {
+    } elsif ($input =~ /^\s*\d+\s*$/ || $input =~ /^\s*-\d+\s*$/) {
         # It's numeric
     } elsif ($input =~ /['"].*['"]/) {
         # It's quoted
