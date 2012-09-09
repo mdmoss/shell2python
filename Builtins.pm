@@ -68,7 +68,7 @@ sub cd_to_chdir {
     my $input = $_[0];
     chomp $input;
     $input =~ s/cd//;
-    my $result = "os.chdir(".Translate::arguments($input).")";
+    my $result = "os.chdir(".Translate::arguments($input, "str").")";
     return $result;
 }
 
@@ -109,17 +109,17 @@ sub convert_test {
     my $input = $_[0];
     my $result = "";
     if ($input =~ /test -r (\S+)/) {
-        $result = "os.access(".Translate::arguments($1).", os.R_OK)";
+        $result = "os.access(".Translate::arguments($1, "str").", os.R_OK)";
     } elsif ($input =~ /test -d (\S+)/) {
-        $result = "os.path.isdir(".Translate::arguments($1).")";
+        $result = "os.path.isdir(".Translate::arguments($1, "str").")";
     } elsif ($input =~ /test (\S+) (\S+) (\S+)/) {
         my $lhs = $1;
         my $rhs = $3;
         if ($2 eq "=") {
-            $result = Translate::arguments ($lhs)." == ".Translate::arguments ($rhs);
+            $result = Translate::arguments ($lhs, "str")." == ".Translate::arguments ($rhs, "str");
         } elsif (defined ($numeric_tests{$2})) {
-            $lhs = make_non_numeric_int (Translate::arguments($lhs));
-            $rhs = make_non_numeric_int (Translate::arguments($rhs));
+            $lhs = Translate::arguments($lhs, "int");
+            $rhs = Translate::arguments($rhs, "int");
             $result = $lhs." ".$numeric_tests{$2}." ".$rhs;
         }
     }

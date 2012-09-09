@@ -26,7 +26,6 @@ is (Translate::arguments ("'words words words'"), "'words words words'");
 is (Translate::arguments ('$var', 'str'), "str(var)");
 is (Translate::arguments ('$var', 'int'), "int(var)");
 
-
 is (Translate::get_comment ("#comment"), "#comment");
 is (Translate::get_comment ("no comment"), "");
 is (Translate::get_comment ("no comment #comment"), "#comment");

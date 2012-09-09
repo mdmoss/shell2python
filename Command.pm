@@ -30,7 +30,7 @@ sub handle {
         $num_argslists++;
     }
     
-    my $result = 'subprocess.call(['.Translate::arguments($command).'])';
+    my $result = 'subprocess.call(['.Translate::arguments($command, "str").'])';
     
     while ($num_argslists != 0) {
         $result =~ s/\)$/\+sys\.argv\[1\:\]\)/;
