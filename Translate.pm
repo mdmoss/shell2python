@@ -9,11 +9,17 @@ sub arguments {
 
     my $args = $_[0];
     $args =~ s/^\s*//;
+    
+    my $conversion_type = "";
+    if (scalar (@_) > 1) {
+        # Assume they've passed a conversion type. That's good.
+        $conversion_type = $_[1];
+    }
 
     while ($args ne "") {
         if ($args =~ /^([^'"\s]+)\s*/) {
             # It's not quoted. The usual escape will do the job
-            $result = $result.escape_arg($1).", ";
+            $result = $result.escape_arg($1, $conversion_type).", ";
             $args =~ s/^([^'"\s]+)\s*//;
         } elsif ($args =~ /^'((\\'|.)*?)'/) {
             # It's got single quotes. Do it directly
@@ -36,6 +42,7 @@ sub arguments {
 sub escape_arg {
     # Removes dollar sign from variables, or adds quotations to strings
     my $input = $_[0];
+    my $conversion_type = $_[1];
     if ($input =~ /^\$/) {
         if ($input =~ /^\s*\$(\d+)\s*$/) {
             # It's in argv
@@ -44,7 +51,12 @@ sub escape_arg {
             # It's all the argvs
            $input = "sys.argv[1:]";
         } else {
-            $input =~ s/^\$//;
+            if ($conversion_type) {
+                $input =~ /^\$(.*)/;
+                $input = $conversion_type."(".$1.")";
+            } else {
+                $input =~ s/^\$//;
+            }
         }
     } elsif ($input =~ /^\s*\d*\s*$/) {
         # It's numeric

@@ -22,6 +22,11 @@ is (Translate::arguments ('123'), 123);
 is (Translate::arguments ('123 hi'), "123, 'hi'");
 is (Translate::arguments ("'words words words'"), "'words words words'");
 
+# Testing the convert type passing thing. Function prototypes would be nice here.
+is (Translate::arguments ('$var', 'str'), "str(var)");
+is (Translate::arguments ('$var', 'int'), "int(var)");
+
+
 is (Translate::get_comment ("#comment"), "#comment");
 is (Translate::get_comment ("no comment"), "");
 is (Translate::get_comment ("no comment #comment"), "#comment");
