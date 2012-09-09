@@ -1,7 +1,0 @@
-Fri Aug 24 16:29:34 EST 2012 | 1 | Wrote basic tester
-Sat Aug 25 20:55:37 EST 2012 | 1 | Added backref echo regex, import handling and subprocess execution
-Sun Aug 26 16:38:11 EST 2012 | 2 | Added the CommandSplit, Assignment, Builtins modules
-Mon Aug 27 17:44:15 EST 2012 | 1 | Troubleshoot and implement Builtins module
-Tue Aug 28 15:51:57 EST 2012 | 1 | Fix Builtin's comment finding function
-Wed Aug 29 20:52:54 EST 2012 | 2 | Expand and refactor Builtin
-Fri Aug 31 17:00:37 EST 2012 | 4 | Total refactor, seperate modules, add Flow control
