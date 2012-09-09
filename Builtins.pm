@@ -105,14 +105,14 @@ $numeric_tests{'-ge'} = '>=';
 $numeric_tests{'-lt'} = '<';
 $numeric_tests{'-le'} = '<=';
 
-sub convert_test {
+sub convert_test_expression {
     my $input = $_[0];
     my $result = "";
-    if ($input =~ /test -r (\S+)/) {
+    if ($input =~ /-r (\S+)/) {
         $result = "os.access(".Translate::arguments($1, "str").", os.R_OK)";
-    } elsif ($input =~ /test -d (\S+)/) {
+    } elsif ($input =~ /-d (\S+)/) {
         $result = "os.path.isdir(".Translate::arguments($1, "str").")";
-    } elsif ($input =~ /test (\S+) (\S+) (\S+)/) {
+    } elsif ($input =~ /(\S+) (\S+) (\S+)/) {
         my $lhs = $1;
         my $rhs = $3;
         if ($2 eq "=") {
@@ -124,6 +124,26 @@ sub convert_test {
         }
     }
     return $result;
+
+}
+
+my %test_seperators;
+$test_seperators{'-o'} = 'or';
+$test_seperators{'-a'} = 'and';
+
+sub convert_test {
+    my $input = $_[0];
+    $input =~ s/test\s+//;
+    # We now have one or more expressions, seperated by [-o|-a];
+    my $result = "";
+    while ($input =~ /\s*(.*?)\s*(-a|-o)/) {
+        my $seperator = $2;
+        $result = $result.convert_test_expression($1)." ".$test_seperators{$seperator}." "; 
+        $input =~ s/\s*(.*?)\s*(-a|-o)//; 
+    }
+    $result = $result.convert_test_expression($input);
+    return $result;
+
 }
 
 my %numeric_expr_ops;
