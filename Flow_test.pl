@@ -24,7 +24,7 @@ is (Flow::handle ("done"), "");
 is (Flow::handle ("for x in one two three"), "for x in 'one', 'two', 'three':");
 is (Flow::handle ("for word in Houston 1202 words"), "for word in 'Houston', 1202, 'words':");
 is (Flow::handle ('for file in *.c'), 'for file in sorted(glob.glob("*.c")):');
-is (Flow::handle ('while 1'), 'while 1:');
 is (Flow::handle ('while $var'), 'while var:');
-is (Flow::handle ('while string'), "while 'string':");
-
+is (Flow::handle ('while true'), "while not subprocess.call(['true']):");
+is (Flow::handle ('while false'), "while not subprocess.call(['false']):");
+is (Flow::handle ('while proc'), "while not subprocess.call(['proc']):");

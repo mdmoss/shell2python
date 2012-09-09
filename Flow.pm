@@ -92,8 +92,16 @@ sub convert_for {
 sub convert_while {
     my $input = $_[0];
     my $result = "";
-    if ($input =~ /while (.*)$/) {
-        $result = "while ".convert_condition($1).":";
+    if ($input =~ /while\s+(.*)$/) {
+        my $condition = $1;
+        if ($condition =~ /^\$/) {
+            # It's a variable
+            $result = "while ".Translate::arguments($condition).":";
+        } elsif (Builtins::can_handle($condition)){
+            $result = "while ".Builtins::handle($condition).":"; 
+        } else {
+            $result = "while not ".Command::handle($condition).":";
+        }
     }
     return $result;
 }   
