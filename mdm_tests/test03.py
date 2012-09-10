@@ -10,3 +10,4 @@ print "'line 5 also has quotes'"
 print "line 6's grammer leaves little to be desired"
 word = 'rockin'
 print "line 7's variable interpolation is " + str(word)
+print "line 8 is " + str(word) + " a variable in the middle!"
