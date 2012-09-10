@@ -172,8 +172,6 @@ sub convert_test {
 
 my %expr_ops;
 $expr_ops{'='} = '==';
-$expr_ops{'|'} = 'or';
-$expr_ops{'&'} = 'and';
 
 sub convert_expr {
     my $input = $_[0];
