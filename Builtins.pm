@@ -58,9 +58,33 @@ sub echo_to_print {
     # Anything with an unescaped $ is a variable. Otherwise, string.    
     my $input = $_[0];
     chomp $input;
-    $input =~ s/echo//;
-    my $result = "print ".Translate::arguments($input);
+    my $result = "";
+    if ($input =~ />\S+\s*$/) {
+        # There's stream redirection. Write to file instead
+        $result = echo_to_file ($input);
+    } else {
+        $input =~ s/echo//;
+        $result = "print ".Translate::arguments($input);
+    }
     $result =~ s/\s*$//;
+    return $result;
+}
+
+my %file_types;
+$file_types{'>>'} = "'a'";
+$file_types{'>'} = "'w'";
+
+sub echo_to_file {
+    # We can only handle a single destination, so we'll assume it's the last one that appears
+    my $input = $_[0];
+    $input =~ s/(>>?)(\S+)\s*$//;
+    my $attrs = $1;
+    my $file = $2;
+
+    # Remove the initial echo 
+    $input =~ s/echo//;
+
+    my $result = "with open(".Translate::arguments($file).", ".$file_types{$attrs}.") as f: print >>f, ".Translate::arguments($input);
     return $result;
 }
 

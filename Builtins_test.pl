@@ -9,6 +9,11 @@ is (Builtins::echo_to_print ("echo 123"), "print 123");
 is (Builtins::echo_to_print ('echo $a'), "print a");
 is (Builtins::echo_to_print ('echo $a $b 123 $c'), "print a, b, 123, c");
 
+is (Builtins::echo_to_file ("echo abc >>\$file"), "with open(file, 'a') as f: print >>f, 'abc'");
+is (Builtins::echo_to_file ("echo abc >\$file"), "with open(file, 'w') as f: print >>f, 'abc'");
+is (Builtins::echo_to_file ("echo abc abc >>file"), "with open('file', 'a') as f: print >>f, 'abc', 'abc'");
+is (Builtins::echo_to_file ("echo abc \$var1 \$var2 >\$save"), "with open(save, 'w') as f: print >>f, 'abc', var1, var2");
+
 is (Builtins::cd_to_chdir ("cd /tmp"), "os.chdir('/tmp')");
 is (Builtins::cd_to_chdir ("cd /dev"), "os.chdir('/dev')");
 
