@@ -26,8 +26,8 @@ sub arguments {
             $result = $result."'".$1."', ";
             $args =~ s/^'(\\'|.)*?'\s*//;
         } elsif ($args =~ /^"((\\"|.)*?)"/) {
-            # It's got double quotes. Eventually deal with metachars here
-            $result = $result.'"'.$1.'", ';
+            # It's got double quotes. Eventually deal with interpolation here
+            $result = $result.'"'.interpolate($1).'", ';
             $args =~ s/^"(\\"|.)*?"\s*//;
         } else {
             last;
@@ -37,6 +37,18 @@ sub arguments {
     # Remove trailing whitespace, and possible comma whitespace
     $result =~ s/\s*(,\s*)?$//;
     return $result;
+}
+
+sub interpolate {
+    # Replaces any variables present in strings
+    my $input = $_[0];
+    
+    $input =~ s/\s*\$(\w+)\s*/\" \+ str($1) \+ \"/g;
+    $input =~ s/^\s*\" \+ //;
+    $input =~ s/ \+ \"\s*$//;
+    $input =~ s/ \+ \"\" //g;
+
+    return $input;
 }
 
 sub escape_arg {
