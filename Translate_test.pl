@@ -33,6 +33,9 @@ is (Translate::arguments ('"some $value in middle"'), "'some ' + str(value) + ' 
 is (Translate::arguments ('$var', 'str'), "str(var)");
 is (Translate::arguments ('$var', 'int'), "int(var)");
 
+is (Translate::interpolate ('"$var"'), "str(var)");
+is (Translate::interpolate ('"$var and one"'), "str(var) + ' and one'");
+
 is (Translate::get_comment ("#comment"), "#comment");
 is (Translate::get_comment ("no comment"), "");
 is (Translate::get_comment ("no comment #comment"), "#comment");

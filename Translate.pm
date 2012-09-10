@@ -25,9 +25,9 @@ sub arguments {
             # It's got single quotes. Do it directly
             $result = $result."'".$1."', ";
             $args =~ s/^'(\\'|.)*?'\s*//;
-        } elsif ($args =~ /^"((\\"|.)*?)"/) {
+        } elsif ($args =~ /^("((\\"|.)*?)")/) {
             # It's got double quotes. Eventually deal with interpolation here
-            $result = $result.'"'.interpolate($1).'", ';
+            $result = $result.interpolate($1).', ';
             $args =~ s/^"(\\"|.)*?"\s*//;
         } else {
             last;
@@ -42,11 +42,13 @@ sub arguments {
 sub interpolate {
     # Replaces any variables present in strings
     my $input = $_[0];
-    
-    $input =~ s/\s*\$(\w+)\s*/\" \+ str($1) \+ \"/g;
-    $input =~ s/^\s*\" \+ //;
-    $input =~ s/ \+ \"\s*$//;
-    $input =~ s/ \+ \"\" //g;
+   
+    $input =~ s/^\s*"/'/;
+    $input =~ s/"\s*$/'/;
+    $input =~ s/([^\\])?\$(\w+)/$1' \+ str($2) \+ '/g;
+    $input =~ s/ \+ '' //g;
+    $input =~ s/^\s*'' \+ //;
+    $input =~ s/ \+ ''\s*$//;
 
     return $input;
 }
