@@ -43,12 +43,10 @@ sub interpolate {
     # Replaces any variables present in strings
     my $input = $_[0];
    
-    $input =~ s/^\s*"/'/;
-    $input =~ s/"\s*$/'/;
-    $input =~ s/([^\\])?\$(\w+)/$1' \+ str($2) \+ '/g;
-    $input =~ s/ \+ '' //g;
-    $input =~ s/^\s*'' \+ //;
-    $input =~ s/ \+ ''\s*$//;
+    $input =~ s/([^\\])?\$(\w+)/$1" \+ str($2) \+ "/g;
+    $input =~ s/ \+ "" //g;
+    $input =~ s/^\s*"" \+ //;
+    $input =~ s/ \+ ""\s*$//;
 
     return $input;
 }

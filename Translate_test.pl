@@ -26,15 +26,15 @@ is (Translate::arguments ('123 hi'), "123, 'hi'");
 is (Translate::arguments ("'words words words'"), "'words words words'");
 is (Translate::arguments ('$#'), "len(sys.argv[1:])"); 
 is (Translate::arguments ('"$var"'), "str(var)"); 
-is (Translate::arguments ('"some $value"'), "'some ' + str(value)"); 
-is (Translate::arguments ('"some $value in middle"'), "'some ' + str(value) + ' in middle'"); 
+is (Translate::arguments ('"some $value"'), '"some " + str(value)'); 
+is (Translate::arguments ('"some $value in middle"'), '"some " + str(value) + " in middle"'); 
 
 # Testing the convert type passing thing. Function prototypes would be nice here.
 is (Translate::arguments ('$var', 'str'), "str(var)");
 is (Translate::arguments ('$var', 'int'), "int(var)");
 
 is (Translate::interpolate ('"$var"'), "str(var)");
-is (Translate::interpolate ('"$var and one"'), "str(var) + ' and one'");
+is (Translate::interpolate ('"$var and one"'), 'str(var) + " and one"');
 
 is (Translate::get_comment ("#comment"), "#comment");
 is (Translate::get_comment ("no comment"), "");
