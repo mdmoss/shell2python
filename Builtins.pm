@@ -146,38 +146,33 @@ sub convert_test {
 
 }
 
-my %numeric_expr_ops;
-$numeric_expr_ops{'+'} = '+';
-$numeric_expr_ops{'-'} = '-';
-$numeric_expr_ops{'*'} = '*';
-$numeric_expr_ops{'/'} = '/';
-$numeric_expr_ops{'<'} = '<';
-$numeric_expr_ops{'<='} = '<=';
-$numeric_expr_ops{'='} = '==';
-$numeric_expr_ops{'!='} = '!=';
-$numeric_expr_ops{'>='} = '>=';
-$numeric_expr_ops{'>'} = '>';
-$numeric_expr_ops{'%'} = '%';
-
-my %logical_expr_ops;
-$logical_expr_ops{'|'} = 'or';
-$logical_expr_ops{'&'} = 'and';
+my %expr_ops;
+$expr_ops{'='} = '==';
+$expr_ops{'|'} = 'or';
+$expr_ops{'&'} = 'and';
 
 sub convert_expr {
     my $input = $_[0];
-    my $result = "";
-    if ($input =~ /expr (\S+) (\S+) (\S+)/) {
-        my $lhs = $1;
-        my $operation = $2;  
-        my $rhs = $3;
-        $operation =~ s/\\//g;
-        if (defined ($numeric_expr_ops{$operation})) {
-            $lhs = make_non_numeric_int (Translate::arguments($lhs));
-            $rhs = make_non_numeric_int (Translate::arguments($rhs));
-            $result = $lhs." ".$numeric_expr_ops{$operation}." ".$rhs;
-        } elsif (defined ($logical_expr_ops{$operation})) {
-            $result = Translate::arguments ($lhs)." ".$numeric_expr_ops{$operation}." ".Translate::arguments($rhs);
+
+    # Crop the expr
+    $input =~ s/expr\s+//;
+
+    # Process the first element - this should always be a value
+    $input =~ s/(\S+)\s+//;
+    my $result = Translate::arguments($1, "int");
+
+    while ($input =~ /(\S+)\s+(\S+)/) {
+        my $operation = $1;
+        my $value = $2;
+
+        if (defined ($expr_ops{$value})) {
+            $result = $result." ".$expr_ops{$operation};
+        } else {
+            $result = $result." ".$operation;
         }
+        $result = $result." ".Translate::arguments($value, "int");
+    
+        $input =~ s/\S+\s+\S+//;
     }
     return $result;
 }
