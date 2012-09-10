@@ -166,9 +166,9 @@ sub convert_expr {
         my $value = $2;
 
         if (defined ($expr_ops{$value})) {
-            $result = $result." ".$expr_ops{$operation};
+            $result = $result." ".$expr_ops{Translate::remove_quotes($operation)};
         } else {
-            $result = $result." ".$operation;
+            $result = $result." ".Translate::remove_quotes($operation);
         }
         $result = $result." ".Translate::arguments($value, "int");
     

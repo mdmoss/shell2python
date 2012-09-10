@@ -131,4 +131,13 @@ sub strip_first_quote {
     return $string;
 }
 
+sub remove_quotes {
+    # Removes the first and last non-whitespace characters, if they are matching quotes
+    if ($_[0] =~ /\s*(['"])((\\\\1|.)*?)\1\s*/) {
+        return $2;
+    }
+    return $_[0];
+
+}
+
 1;

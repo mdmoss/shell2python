@@ -54,6 +54,12 @@ is (Translate::strip_quotes ("'quote\"quote\"quote'"), "");
 is (Translate::strip_quotes ('"quote\'quote\'quote"'), "");
 is (Translate::strip_quotes ('"quote""quote"\'quote\''), "");
 
+is (Translate::remove_quotes ("'*'"), "*");
+is (Translate::remove_quotes ("'a'"), "a");
+is (Translate::remove_quotes ("'123'"), "123");
+is (Translate::remove_quotes ("'123123123'"), "123123123");
+is (Translate::remove_quotes ("'/'"), "/");
+
 ok (${Translate::introspect_imports("sys.stdin.read()")}{'sys'});
 ok (${Translate::introspect_imports("while sys.stdin.read():")}{'sys'});
 ok (${Translate::introspect_imports("subprocess.call('pwd')")}{'subprocess'});
