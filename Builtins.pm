@@ -5,13 +5,13 @@ use Translate;
 
 package Builtins;
 
-my %keywords;
-$keywords{'echo'} = \&echo_to_print;
-$keywords{'exit'} = \&exit_to_exit;
-$keywords{'read'} = \&read_to_stdin;
-$keywords{'cd'} = \&cd_to_chdir;
-$keywords{'test'} = \&convert_test;
-$keywords{'expr'} = \&convert_expr;
+my %keywords = (
+'echo' => \&echo_to_print,
+'exit' => \&exit_to_exit,
+'read' => \&read_to_stdin,
+'cd'   => \&cd_to_chdir,
+'test' => \&convert_test,
+'expr' => \&convert_expr);
 
 sub can_handle {
     # Identifies if this module can handle the line
@@ -70,9 +70,9 @@ sub echo_to_print {
     return $result;
 }
 
-my %file_types;
-$file_types{'>>'} = "'a'";
-$file_types{'>'} = "'w'";
+my %file_types = (
+'>>' => "'a'",
+'>'  => "'w'");
 
 sub echo_to_file {
     # We can only handle a single destination, so we'll assume it's the last one that appears
