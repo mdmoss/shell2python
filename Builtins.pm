@@ -2,6 +2,7 @@
 use strict;
 
 use Translate;
+use Command;
 
 package Builtins;
 
@@ -51,7 +52,9 @@ sub convert_backticks {
     if (can_handle ($expression)) {
         return handle ($expression);
     }
-    return $expression;
+    my $command = Command::handle($expression);
+    $command =~ s/subprocess\.call/subprocess\.check_output/;
+    return $command;
 }
 
 sub echo_to_print {

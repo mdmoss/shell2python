@@ -49,5 +49,7 @@ is (Builtins::can_handle ("doawesomethingsyeah"), 0);
 ok (Builtins::can_handle ("\t\t      echo"));
 
 is (Builtins::handle ("echo 123"), Builtins::echo_to_print ("echo 123"));
+is (Builtins::handle ("echo 123 >file"), Builtins::echo_to_print ("echo 123 >file"));
 is (Builtins::handle ("exit 999"), Builtins::exit_to_exit ("exit 999"));
 is (Builtins::handle ("test matt = great"), Builtins::convert_test ("test matt = great"));
+is (Builtins::handle ("expr 1 + 1"), Builtins::convert_expr ("expr 1 + 1"));
