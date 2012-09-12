@@ -57,6 +57,12 @@ sub interpolate {
     return $input;
 }
 
+my %numeric_types = (
+'int' => 1,
+'float' => 1,
+'long' => 1,
+'complex' => 1);
+
 sub escape_arg {
     # Removes dollar sign from variables, or adds quotations to strings
     my $input = $_[0];
@@ -80,7 +86,11 @@ sub escape_arg {
             }
         }
     } elsif ($input =~ /^\s*\d+\s*$/ || $input =~ /^\s*-\d+\s*$/) {
-        # It's numeric
+        # It's numeric. We should convert it if it isn't already.
+        if ($conversion_type && not defined ($numeric_types{$conversion_type})) {
+            $input =~ /(\d+)/;
+            $input = $conversion_type."(".$1.")";
+        }
     } elsif ($input =~ /['"].*['"]/) {
         # It's quoted
     } elsif ($input =~ /['"]/) {

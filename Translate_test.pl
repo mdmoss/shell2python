@@ -33,11 +33,16 @@ is (Translate::arguments ('"some $value in middle"'), '"some " + str(value) + " 
 is (Translate::arguments ('$var', 'str'), "str(var)");
 is (Translate::arguments ('$var', 'int'), "int(var)");
 is (Translate::arguments ('$var $var', 'int'), "int(var), int(var)");
+is (Translate::arguments ('123', 'int'), "123");
+is (Translate::arguments ('123', 'long'), "123");
+is (Translate::arguments ('123', 'float'), "123");
+is (Translate::arguments ('123', 'complex'), "123");
+is (Translate::arguments ('123', 'str'), "str(123)");
 
-# Test specifying the seperator
+# Test specifying the seperator. Really missing that structured programming
 is (Translate::arguments ('abc def', 'str', 'word'), "'abc'word'def'");
 is (Translate::arguments ('$var $var', 'str', 'word'), "str(var)wordstr(var)");
-
+is (Translate::arguments ('$var $var', 'str', ' and '), "str(var) and str(var)");
 
 is (Translate::interpolate ('"$var"'), "str(var)");
 is (Translate::interpolate ('"$var and one"'), 'str(var) + " and one"');
