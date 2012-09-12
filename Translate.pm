@@ -41,12 +41,12 @@ sub arguments {
         }
     }
     # Remove trailing whitespace, and possible separator 
-    $result =~ s/\s*($separator)?$//;
+    $result =~ s/\Q$separator\E\s*$//;
     return $result;
 }
 
 sub interpolate {
-    # Replaces any variables present in strings
+    # Replaces any variables present in double quoted strings
     my $input = $_[0];
    
     $input =~ s/([^\\])?\$(\w+)/$1" \+ str($2) \+ "/g;

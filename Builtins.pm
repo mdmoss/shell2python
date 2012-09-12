@@ -65,12 +65,31 @@ sub echo_to_print {
     if ($input =~ />\S+\s*$/) {
         # There's stream redirection. Write to file instead
         $result = echo_to_file ($input);
+    } elsif ($input =~ /echo\s+-n\s*/) {
+        $result = echo_to_stdout ($input); 
     } else {
         $input =~ s/echo//;
         $result = "print ".Translate::arguments($input);
     }
     $result =~ s/\s*$//;
     return $result;
+}
+
+sub echo_to_stdout {
+
+    my $input = $_[0];
+    $input =~ s/\s*$//;
+
+    if ($input =~ /echo\s+-n$/) {
+        return "sys.stdout.write('')";
+    } else {
+        # It actually has some arguments
+        $input =~ s/echo\s+-n\s+//;
+        my $string = "sys.stdout.write(".Translate::arguments($input, "str", " + ' ' + ").")";
+        return $string;
+    }
+
+    return $_[0];
 }
 
 my %file_types = (
