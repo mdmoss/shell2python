@@ -32,6 +32,12 @@ is (Translate::arguments ('"some $value in middle"'), '"some " + str(value) + " 
 # Testing the convert type passing thing. Function prototypes would be nice here.
 is (Translate::arguments ('$var', 'str'), "str(var)");
 is (Translate::arguments ('$var', 'int'), "int(var)");
+is (Translate::arguments ('$var $var', 'int'), "int(var), int(var)");
+
+# Test specifying the seperator
+is (Translate::arguments ('abc def', 'str', 'word'), "'abc'word'def'");
+is (Translate::arguments ('$var $var', 'str', 'word'), "str(var)wordstr(var)");
+
 
 is (Translate::interpolate ('"$var"'), "str(var)");
 is (Translate::interpolate ('"$var and one"'), 'str(var) + " and one"');

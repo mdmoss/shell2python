@@ -16,26 +16,32 @@ sub arguments {
         $conversion_type = $_[1];
     }
 
+    my $separator = ", ";
+    if (scalar (@_) > 2) {
+        # They've also passed a separator. We can handle that.
+        $separator = $_[2];
+    }
+
     while ($args ne "") {
         if ($args =~ /^([^'"\s]+)\s*/) {
             # It's not quoted. The usual escape will do the job
-            $result = $result.escape_arg($1, $conversion_type).", ";
+            $result = $result.escape_arg($1, $conversion_type).$separator;
             $args =~ s/^([^'"\s]+)\s*//;
         } elsif ($args =~ /^'((\\'|.)*?)'/) {
             # It's got single quotes. Do it directly
-            $result = $result."'".$1."', ";
+            $result = $result."'".$1."'".$separator;
             $args =~ s/^'(\\'|.)*?'\s*//;
         } elsif ($args =~ /^("((\\"|.)*?)")/) {
             # It's got double quotes. Eventually deal with interpolation here
-            $result = $result.interpolate($1).', ';
+            $result = $result.interpolate($1).$separator;
             $args =~ s/^"(\\"|.)*?"\s*//;
         } else {
-            last;
             # This is a worst-case bail out to kill an infinite loop.
+            last;
         }
     }
-    # Remove trailing whitespace, and possible comma whitespace
-    $result =~ s/\s*(,\s*)?$//;
+    # Remove trailing whitespace, and possible separator 
+    $result =~ s/\s*($separator)?$//;
     return $result;
 }
 
