@@ -32,25 +32,7 @@ while (my $line = <>) {
     $line =~ s/^\s*//;
     $line =~ s/\s*$//;
 
-    my $python;
-    
-    if (Assignment::can_handle($line)) {
-        # printf ("Handled by Assignment\n");
-        $python =  Assignment::handle ($line);
-        
-    } elsif (Flow::can_handle($line)) {
-        # printf ("Handled by Flow\n");
-        $python =  Flow::handle ($line);
-        
-    } elsif (Builtins::can_handle($line)) {
-        # printf ("Handled by Builtins\n");
-        $python =  Builtins::handle ($line);
-        
-    } elsif (Command::can_handle($line)) {
-        # printf ("Handled by Command\n");
-        $python =  Command::handle ($line);
-    }
-   
+    my $python = convert_expression($line);
     my $line_imports = Translate::introspect_imports($python);
 
     $indent += Flow::get_indent_delta($line);
@@ -79,5 +61,32 @@ foreach my $import (sort (keys %imports)) {
 }
 
 foreach my $line (@python_chunks) {
-    {print $line};
+    print $line;
+}
+
+sub convert_expression {
+
+    my $line = $_[0];
+    my $python;
+
+    if (Assignment::can_handle($line)) {
+        # printf ("Handled by Assignment\n");
+        $python =  Assignment::handle ($line);
+        
+    } elsif (Flow::can_handle($line)) {
+        # printf ("Handled by Flow\n");
+        $python =  Flow::handle ($line);
+        
+    } elsif (Builtins::can_handle($line)) {
+        # printf ("Handled by Builtins\n");
+        $python =  Builtins::handle ($line);
+        
+    } elsif (Command::can_handle($line)) {
+        # printf ("Handled by Command\n");
+        $python =  Command::handle ($line);
+    } else {
+        $python = "#_no_trans_# ".$line;
+    }
+
+    return $python;
 }
