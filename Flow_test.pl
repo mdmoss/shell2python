@@ -21,6 +21,7 @@ is (Flow::handle ("do"), "");
 is (Flow::handle ("then"), "");
 is (Flow::handle ("fi"), "");
 is (Flow::handle ("done"), "");
+is (Flow::handle ("do pwd"), "subprocess.call(['pwd'])");
 is (Flow::handle ("for x in one two three"), "for x in 'one', 'two', 'three':");
 is (Flow::handle ("for word in Houston 1202 words"), "for word in 'Houston', 1202, 'words':");
 is (Flow::handle ('for file in *.c'), 'for file in sorted(glob.glob("*.c")):');

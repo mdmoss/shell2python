@@ -2,6 +2,7 @@
 use strict;
 
 use Translate;
+use Assignment;
 use Builtins;
 use Command;
 
@@ -13,8 +14,8 @@ $keywords{'elif'} = \&convert_elif;
 $keywords{'for'} = \&convert_for;
 $keywords{'while'} = \&convert_while;
 $keywords{'else'} = \&convert_else;
-$keywords{'do'} = \&blank;
-$keywords{'then'} = \&blank;
+$keywords{'do'} = \&ignore_keywords;
+$keywords{'then'} = \&ignore_keywords;
 $keywords{'done'} = \&blank;
 $keywords{'fi'} = \&blank;
 
@@ -111,6 +112,23 @@ sub convert_for {
 
 sub convert_else {
     return "else:";
+}
+
+sub ignore_keywords {
+    my $result = $_[0];
+    $result =~ s/^\s*(do|then)\s*(.*)$//;
+    my $expression = $2;
+    if ($expression) {
+        if (Assignment::can_handle($expression)) {
+            $result = Assignment::handle($expression);
+        } elsif (Builtins::can_handle($expression)) {
+            $result = Builtins::handle($expression);
+        } elsif (Command::can_handle($expression)) {
+            $result = Command::handle($expression);
+        }
+    }
+
+    return $result;
 }
 
 sub blank {
