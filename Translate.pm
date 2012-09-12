@@ -77,6 +77,8 @@ sub escape_arg {
         } elsif ($input =~ /^\s*\$\#\s*/){
             # It's the length of the arg array
             $input = "len(sys.argv[1:])";
+        } elsif ($input =~ /^\s*\$\(ls\)\s*$/) {
+            $input = 'sorted(glob.glob("*"))';
         } else {
             if ($conversion_type) {
                 $input =~ /^\$(.*)/;
