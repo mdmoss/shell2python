@@ -33,27 +33,33 @@ while (my $line = <>) {
     $line =~ s/^\s*//;
     $line =~ s/\s*$//;
 
-    while ($line =~ /(?:((?:(['"]).*?\2|\\;|\\\|\||\\&&|.)*?)(;|\|\||&&|$))/) {
+    # This regex matches any shell line followed by a metacharacter. Eg expr; expr && expr||
+    while ($line =~ /(?:((?:(['"]).*?\2|\\;|\\\|\||\\&&|.)+?)(;|\|\||&&|$))\s*/) {
+        
+        my $expression = $1;
+        my $separator = $3;
 
+        my $python = convert_expression($expression);
+        my $line_imports = Translate::introspect_imports($python);
+
+        $indent += Flow::get_indent_delta($expression);
+        $python = $python."  ".$comment;  # Note double space as per PEP-8
+        $python =~ s/\s*$//;
+
+        if ($python =~ /else:/) {
+            # This is a shameful workaround, but should do the job.
+            push (@python_chunks, " "x($indent-4).$python."\n");
+        } elsif ($python) {
+            push (@python_chunks, " "x$indent.$python."\n");
+        }
+
+        if ($line_imports ne "") {
+            @imports {keys %{$line_imports}} = values %{$line_imports};
+        }
+
+        $line =~ s/(?:((?:(['"]).*?\2|\\;|\\\|\||\\&&|.)+?)(;|\|\||&&|$))\s*//;
     }
 
-    my $python = convert_expression($line);
-    my $line_imports = Translate::introspect_imports($python);
-
-    $indent += Flow::get_indent_delta($line);
-    $python = $python."  ".$comment;  # Note double space as per PEP-8
-    $python =~ s/\s*$//;
-
-    if ($python =~ /else:/) {
-        # This is a shameful workaround, but should do the job.
-        push (@python_chunks, " "x($indent-4).$python."\n");
-    } elsif ($python) {
-        push (@python_chunks, " "x$indent.$python."\n");
-    }
-
-    if ($line_imports ne "") {
-        @imports {keys %{$line_imports}} = values %{$line_imports};
-    }
 }
 
 # Begin outputting the final result
