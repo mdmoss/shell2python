@@ -11,7 +11,7 @@ is (Translate::escape_arg ("'String'"), "'String'");
 is (Translate::escape_arg ('$1'), "sys.argv[1]");
 is (Translate::escape_arg ('$@'), "sys.argv[1:]");
 is (Translate::escape_arg ('$#'), "len(sys.argv[1:])");
-is (Translate::escape_arg ('$(ls)'), "");
+is (Translate::escape_arg ('$(ls)'), 'sorted(glob.glob("*"))');
 is (Translate::escape_arg ('1'), '1');
 is (Translate::escape_arg ('2'), '2');
 is (Translate::escape_arg ('-1'), '-1');
