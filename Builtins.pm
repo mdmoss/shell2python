@@ -190,7 +190,7 @@ sub convert_expr {
         my $operation = $1;
         my $value = $2;
 
-        if (defined ($expr_ops{$value})) {
+        if (defined ($expr_ops{Translate::remove_quotes($operation)})) {
             $result = $result." ".$expr_ops{Translate::remove_quotes($operation)};
         } else {
             $result = $result." ".Translate::remove_quotes($operation);

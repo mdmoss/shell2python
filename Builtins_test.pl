@@ -35,6 +35,7 @@ is (Builtins::convert_test ("test 1 -le 1 -o 2 -ge 2"), "1 <= 1 or 2 >= 2");
 is (Builtins::convert_test ("test 1 -le 1 -a 2 -eq 2"), "1 <= 1 and 2 == 2");
 
 is (Builtins::convert_expr ("expr 1 \+ \$var"), '1 + int(var)');
+is (Builtins::convert_expr ("expr 1 = 1"), '1 == 1');
 is (Builtins::convert_expr ("expr 1 \- \$var"), '1 - int(var)');
 is (Builtins::convert_expr ("expr 1 \* \$var"), '1 * int(var)');
 is (Builtins::convert_expr ("expr 1 \/ \$var"), '1 / int(var)');
