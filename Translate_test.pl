@@ -29,6 +29,10 @@ is (Translate::arguments ('$#'), "len(sys.argv[1:])");
 is (Translate::arguments ('"$var"'), "str(var)"); 
 is (Translate::arguments ('"some $value"'), '"some " + str(value)'); 
 is (Translate::arguments ('"some $value in middle"'), '"some " + str(value) + " in middle"'); 
+is (Translate::arguments ('"\$"'), '"$"');
+is (Translate::arguments ('\$'), "'\$'");
+is (Translate::arguments ("'\\\$'"), "'\\\$'");
+
 
 # Testing the convert type passing thing. Function prototypes would be nice here.
 is (Translate::arguments ('$var', 'str'), "str(var)");

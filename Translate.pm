@@ -53,6 +53,7 @@ sub interpolate {
     $input =~ s/ \+ "" //g;
     $input =~ s/^\s*"" \+ //;
     $input =~ s/ \+ ""\s*$//;
+    $input =~ s/\\(.)/$1/g;
 
     return $input;
 }
@@ -101,6 +102,7 @@ sub escape_arg {
     } else {
         $input = "'".$input."'";
     }   
+    $input =~ s/\\(.)/$1/g;
     return $input;    
 }
 
