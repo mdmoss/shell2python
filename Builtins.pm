@@ -124,13 +124,13 @@ sub make_non_numeric_int {
     return $input;
 }
 
-my %numeric_tests;
-$numeric_tests{'-eq'} = '==';
-$numeric_tests{'-ne'} = '!=';
-$numeric_tests{'-gt'} = '>';
-$numeric_tests{'-ge'} = '>=';
-$numeric_tests{'-lt'} = '<';
-$numeric_tests{'-le'} = '<=';
+my %numeric_tests = (
+'-eq' => '==',
+'-ne' => '!=',
+'-gt' => '>',
+'-ge' => '>=',
+'-lt' => '<',
+'-le' => '<=');
 
 sub convert_test_expression {
     my $input = $_[0];
@@ -154,9 +154,9 @@ sub convert_test_expression {
 
 }
 
-my %test_seperators;
-$test_seperators{'-o'} = 'or';
-$test_seperators{'-a'} = 'and';
+my %test_seperators = (
+'-o' => 'or',
+'-a' => 'and');
 
 sub convert_test {
     my $input = $_[0];
@@ -173,8 +173,8 @@ sub convert_test {
 
 }
 
-my %expr_ops;
-$expr_ops{'='} = '==';
+my %expr_ops = (
+'=' => '==');
 
 sub convert_expr {
     my $input = $_[0];
