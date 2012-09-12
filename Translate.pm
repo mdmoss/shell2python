@@ -121,6 +121,10 @@ sub get_comment {
     return $input;
 }
 
+my %import_special_cases  = (
+'sys.stdin'  => 'sys',
+'sys.stdout' => 'sys');
+
 sub introspect_imports {
     # Attempts to identify any modules that need importing in a line.
     # Returns these modules as the keys of a hash
@@ -130,7 +134,7 @@ sub introspect_imports {
     while ($line =~ /((\w+\.)+)/) {
         my $import = $1;
         $import =~ s/\.$//;
-        $import =~ s/sys.stdin/sys/; # Terrible fix for non-standard things
+        $import = $import_special_cases{$import} unless not defined ($import_special_cases{$import});
         $imports{$import} = 1; 
         $line =~ s/((\w+\.)+)//;
     }
