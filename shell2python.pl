@@ -28,9 +28,14 @@ while (my $line = <>) {
         push (@python_chunks, $comment."\n");
         next
     }
+
     $line =~ s/$comment//; 
     $line =~ s/^\s*//;
     $line =~ s/\s*$//;
+
+    while ($line =~ /(?:((?:(['"]).*?\2|\\;|\\\|\||\\&&|.)*?)(;|\|\||&&|$))/) {
+
+    }
 
     my $python = convert_expression($line);
     my $line_imports = Translate::introspect_imports($python);
