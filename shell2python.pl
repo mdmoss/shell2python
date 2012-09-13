@@ -29,7 +29,7 @@ while (my $line = <>) {
         next
     }
 
-    $line =~ s/$comment//; 
+    $line =~ s/\Q$comment\E//; 
     $line =~ s/^\s*//;
     $line =~ s/\s*$//;
 

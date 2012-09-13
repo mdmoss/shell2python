@@ -64,6 +64,7 @@ is (Translate::get_comment ("'#comment"), "#comment");
 is (Translate::get_comment ("#comment''"), "#comment''");
 is (Translate::get_comment ("#!/usr/bin/perl"), "#!/usr/bin/perl");
 is (Translate::get_comment ('$#'), "");
+is (Translate::get_comment ('echo $b # this should print out $s'), "# this should print out \$s");
 
 is (Translate::strip_first_quote ('"test"123'), "123");
 is (Translate::strip_first_quote ('"test""123"'), '"123"');
