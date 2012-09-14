@@ -209,6 +209,8 @@ sub convert_expr {
         my $operation = $1;
         my $value = $2;
 
+        $operation =~ s/\\//g;
+
         if (defined ($expr_ops{Translate::remove_quotes($operation)})) {
             $result = $result." ".$expr_ops{Translate::remove_quotes($operation)};
         } else {

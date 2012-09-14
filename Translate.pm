@@ -81,13 +81,13 @@ sub escape_arg {
         } elsif ($input =~ /^\s*\$\(ls\)\s*$/) {
             $input = 'sorted(glob.glob("*"))';
         } else {
-            if ($conversion_type) {
-                $input =~ /^\$(.*)/;
-                $input = $conversion_type."(".$1.")";
-            } else {
-                $input =~ s/^\$//;
-            }
+            $input =~ s/^\$//;
         }
+
+        if ($conversion_type) {
+            $input = "$conversion_type(".$input.")";
+        }
+        
     } elsif ($input =~ /^\s*\d+\s*$/ || $input =~ /^\s*-\d+\s*$/) {
         # It's numeric. We should convert it if it isn't already.
         if ($conversion_type && not defined ($numeric_types{$conversion_type})) {
