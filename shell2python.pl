@@ -52,11 +52,11 @@ while (my $line = <>) {
         if ($python =~ /else:/) {
             # This is a shameful workaround, but should do the job.
             push (@python_chunks, " "x($indent-4 + $temp_indent).$python."\n");
-        } elsif ($separator =~ /&&/) {
-            push @python_chunks, " "x($indent + $temp_indent)."if ".$python.":\n");
+        } elsif ($separator =~ /\&\&/) {
+            push (@python_chunks, " "x($indent + $temp_indent)."if ".$python.":\n");
             $temp_indent += 4; 
-        } elsif ($separator =~ /||/) {
-            push @python_chunks, " "x($indent + $temp_indent)."if not ".$python.":\n");
+        } elsif ($separator =~ /\|\|/) {
+            push (@python_chunks, " "x($indent + $temp_indent)."if not ".$python.":\n");
             $temp_indent += 4; 
         } elsif ($python) {
             push (@python_chunks, " "x($indent + $temp_indent).$python."\n");
