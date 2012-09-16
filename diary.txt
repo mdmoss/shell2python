@@ -1,5 +1,11 @@
 Commit dates / times | Hours worked on day | Commit Activity ([C]oding, [D]ebugging, [T]esting, [O]ther) | Commit Subject
 
+Sun Sep 16 18:31:29 2012 +1000 |  2  |  O  | Add and update header comments for submission
+Sun Sep 16 18:22:57 2012 +1000 |     |  T  | Polish switch case and add demo / test
+Sun Sep 16 17:59:00 2012 +1000 |     |  C  | Add basic case handling
+Sun Sep 16 13:03:43 2012 +1000 |     |  O  | Update demos to show off top level conditionals
+Sun Sep 16 12:45:04 2012 +1000 |     |  D  | Fix and test top level conditionals
+Sun Sep 16 12:40:04 2012 +1000 |     |  C  | Add handling of shell conditionals && and ||
 Sat Sep 15 15:11:31 2012 +1000 |     |  O  | Add demo scripts following rearrangement
 Fri Sep 14 19:36:57 2012 +1000 |  3  |  O  | Restructure for submission
 Fri Sep 14 19:26:17 2012 +1000 |     |  O  | Add extra demo scripts
