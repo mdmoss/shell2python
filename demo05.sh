@@ -5,5 +5,5 @@
 
 while true
 do
-    uptime; sleep 600
+    uptime && sleep 600
 done

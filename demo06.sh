@@ -5,7 +5,7 @@
 name=$1
 user=`whoami`
 if test $name = $user; then
-    exit 0
+    echo Correct user && exit 0
 else
-    exit 1 
+    echo Incorrect user && exit 1 
 fi
