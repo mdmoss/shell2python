@@ -2,7 +2,7 @@
 
 # Matthew Moss
 # mdm@cse.unsw.edu.au
-# cs2041, 12s1
+# cs2041, 12s2
 
 use strict;
 

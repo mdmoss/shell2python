@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 pwd; ls; a=3
 b=7; c=3; echo a b c
 

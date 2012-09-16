@@ -1,5 +1,10 @@
 #/bin/sh
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # We're going to have nested loops
 
 for i in 1 2 3 

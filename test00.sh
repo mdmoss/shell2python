@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # This is a test of Level 0 features. Expect the unexpected. # Like that
 # All the cool kids use #as#es instead of the letter H now
 # "It's a thing" they tell me, but who can be sure

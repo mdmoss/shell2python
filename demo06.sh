@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # Tests if a user is... someone? These demos are weird...
 
 name=$1

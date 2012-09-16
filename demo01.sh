@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # Inspired by iota.sh from cs2041 2012s2 lecture examples
 
 # Prints numbers in the range of two arguments

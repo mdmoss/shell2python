@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # We'll start with a for loop. Everyone likes for loops.
 
 for n in 1 2 3

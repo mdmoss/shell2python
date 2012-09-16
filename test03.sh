@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # We're really going to town with quotes today
 
 echo line 1

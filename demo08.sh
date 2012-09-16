@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # Chorus
 
 if test $# -ne 1; then

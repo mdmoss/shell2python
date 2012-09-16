@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # Print an increasing sequence of numbers
 
 if test $# -ne 1

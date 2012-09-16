@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # A simple guessing game
 # May be used to entertain small children or the like
 

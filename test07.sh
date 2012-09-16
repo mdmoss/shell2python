@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Matthew Moss
+# mdm@cse.unsw.edu.au
+# cs2041, 12s2
+
+
 # Nested if statements with variables. Crazy stuff
 
 i=1
