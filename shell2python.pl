@@ -12,7 +12,9 @@ use Builtins;
 use Command;
 
 my %imports;
+# $indent is used for multi line tracking, $temp_indent is reset for every line read.
 my $indent = 0;
+my $temp_indent = 0;
 my @python_chunks;
 # Tracks state of switch / case
 my $switch_case_var = "";;
@@ -35,27 +37,32 @@ while (my $line = <>) {
     $line =~ s/^\s*//;
     $line =~ s/\s*$//;
     
-    # Used for tracking purely meta indents for control characters in bash eg. &&
-    my $temp_indent = 0;
+    $temp_indent = 0;
 
     # Last minute switch / case handling
     # Unfortunately, this has to be stateful, so can't fit easily into the flow module.
     # Having a special case is neater than hacking it in, IMHO.
-    if ($line =~ /^case (\w+) in/) {
-        $switch_case_var = $1;
-        next; 
-    } elsif ($switch_case_var and $line =~ /^(\S+) \)/) {
-        push (@python_chunks, " "x$indent."if ".$switch_case_var." = ".$1.":\n");
-        $line =~ s/^(\S+) \)//;
-        $indent += 4;
-    } elsif ($switch_case_var and $line =~ /esac/) {
-        $switch_case_var = "";
-        $indent -= 4;
+
+    if ($line =~ /^case (\S+) in/) {
+        $switch_case_var = Translate::arguments($1);
+        $line =~ s/^case \S+ in//;
     }
 
-    if ($switch_case_var and $line =~ /;;$/) {
+    if ($switch_case_var ne "" and $line =~ /^(\S+)[^\\]*\)/) {
+        push (@python_chunks, " "x$indent."if ".$switch_case_var." == ".Translate::arguments($1).":\n");
+        $line =~ s/^(\S+)[^\\]*\)//;
+        $indent += 4;
+    }
+
+    if ($switch_case_var and $line =~ /\;\;$/) {
         $temp_indent += 4; 
-        $line = s/;;$//;
+        $indent -= 4;
+        $line =~ s/;;$//;
+    }
+
+    if ($switch_case_var ne "" and $line =~ /esac/) {
+        $switch_case_var = "";
+        $line =~ s/esac//;
     }
 
     # This regex matches any shell line followed by a metacharacter. Eg expr; expr && expr||
