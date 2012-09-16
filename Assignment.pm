@@ -23,7 +23,7 @@ sub handle {
     chomp ($input);
 
     $input =~ /(\w+)=(.+)/;
-    my $variable = $1;
+    my $variable = Translate::make_keyword_safe($1);
     my $rhs = $2;
     my $value = "";
 

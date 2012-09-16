@@ -108,7 +108,8 @@ sub escape_arg {
         $input = "'".$input."'";
     }   
     $input =~ s/\\(.)/$1/g;
-    return $input;    
+    
+    return make_keyword_safe($input); 
 }
 
 sub get_comment {
@@ -179,6 +180,51 @@ sub remove_quotes {
     }
     return $_[0];
 
+}
+
+# List taken from http://docs.python.org/release/2.7/reference/lexical_analysis.html#identifiers
+my %python_keywords = (
+'and'      => 'and__keyword_renamed__'     ,
+'as'       => 'as__keyword_renamed__'      ,
+'assert'   => 'assert__keyword_renamed__'  ,
+'break'    => 'break__keyword_renamed__'   ,
+'class'    => 'class__keyword_renamed__'   ,
+'continue' => 'continue__keyword_renamed__',
+'def'      => 'def__keyword_renamed__'     ,
+'del'      => 'del__keyword_renamed__'     ,
+'elif'     => 'elif__keyword_renamed__'    ,
+'else'     => 'else__keyword_renamed__'    ,
+'except'   => 'except__keyword_renamed__'  ,
+'exec'     => 'exec__keyword_renamed__'    ,
+'finally'  => 'finally__keyword_renamed__' ,
+'for'      => 'for__keyword_renamed__'     ,
+'from'     => 'from__keyword_renamed__'    ,
+'global'   => 'global__keyword_renamed__'  ,
+'if'       => 'if__keyword_renamed__'      ,
+'import'   => 'import__keyword_renamed__'  ,
+'in'       => 'in__keyword_renamed__'      ,
+'is'       => 'is__keyword_renamed__'      ,
+'lambda'   => 'lambda__keyword_renamed__'  ,
+'not'      => 'not__keyword_renamed__'     ,
+'or'       => 'or__keyword_renamed__'      ,
+'pass'     => 'pass__keyword_renamed__'    ,
+'print'    => 'print__keyword_renamed__'   ,
+'raise'    => 'raise__keyword_renamed__'   ,
+'return'   => 'return__keyword_renamed__'  ,
+'try'      => 'try__keyword_renamed__'     ,
+'while'    => 'while__keyword_renamed__'   ,
+'with'     => 'with__keyword_renamed__'    ,
+'yield'    => 'yield__keyword_renamed__'   );
+
+sub make_keyword_safe {
+
+    my $input = $_[0];
+
+    if (defined ($python_keywords{$input})) {
+        return $python_keywords{$input};
+    }
+    
+    return $input;    
 }
 
 1;
