@@ -1,6 +1,7 @@
 Commit dates / times | Hours worked on day | Commit Activity ([C]oding, [D]ebugging, [T]esting, [O]ther) | Commit Subject
 
-Sun Sep 16 18:31:29 2012 +1000 |  2  |  O  | Add and update header comments for submission
+Sun Sep 16 20:07:36 2012 +1000 |  3  |  C  | Add keyword safety to Translate
+Sun Sep 16 18:31:29 2012 +1000 |     |  O  | Add and update header comments for submission
 Sun Sep 16 18:22:57 2012 +1000 |     |  T  | Polish switch case and add demo / test
 Sun Sep 16 17:59:00 2012 +1000 |     |  C  | Add basic case handling
 Sun Sep 16 13:03:43 2012 +1000 |     |  O  | Update demos to show off top level conditionals
