@@ -32,6 +32,9 @@ while (my $line = <>) {
     $line =~ s/\Q$comment\E//; 
     $line =~ s/^\s*//;
     $line =~ s/\s*$//;
+    
+    # Used for tracking purely meta indents for control characters in bash eg. &&
+    my $temp_indent = 0;
 
     # This regex matches any shell line followed by a metacharacter. Eg expr; expr && expr||
     while ($line =~ /(?:((?:(['"]).*?\2|\\;|\\\|\||\\&&|.)+?)(;|\|\||&&|$))\s*/) {
@@ -48,9 +51,15 @@ while (my $line = <>) {
 
         if ($python =~ /else:/) {
             # This is a shameful workaround, but should do the job.
-            push (@python_chunks, " "x($indent-4).$python."\n");
+            push (@python_chunks, " "x($indent-4 + $temp_indent).$python."\n");
+        } elsif ($separator =~ /&&/) {
+            push @python_chunks, " "x($indent + $temp_indent)."if ".$python.":\n");
+            $temp_indent += 4; 
+        } elsif ($separator =~ /||/) {
+            push @python_chunks, " "x($indent + $temp_indent)."if not ".$python.":\n");
+            $temp_indent += 4; 
         } elsif ($python) {
-            push (@python_chunks, " "x$indent.$python."\n");
+            push (@python_chunks, " "x($indent + $temp_indent).$python."\n");
         }
 
         if ($line_imports ne "") {
